@@ -29,6 +29,23 @@ def revoke_teams(modeladmin, request, queryset):
     modeladmin.message_user(request, f"❌ Revoked approval for {count} team(s).", level='warning')
 
 
+@admin.action(description='🗑️ Permanently delete selected registrations (and linked user accounts)')
+def delete_registrations(modeladmin, request, queryset):
+    from django.contrib.auth.models import User
+    deleted_count = 0
+    for team in queryset:
+        # Also remove the linked Django User so credentials are fully wiped
+        if team.generated_username:
+            User.objects.filter(username=team.generated_username).delete()
+        team.delete()
+        deleted_count += 1
+    modeladmin.message_user(
+        request,
+        f"🗑️ Permanently deleted {deleted_count} registration(s) and their linked user account(s).",
+        level='warning'
+    )
+
+
 # ─── TeamRegistration Admin ────────────────────────────────────────────────────
 
 @admin.register(TeamRegistration)
@@ -45,7 +62,7 @@ class TeamRegistrationAdmin(admin.ModelAdmin):
         'primary_tshirt_size',
         'teammate_tshirt_size',
         'debate_topic',
-        'stance_badge',
+        'stance',
         'debate_date',
         'debate_time',
         'classroom',
@@ -57,6 +74,7 @@ class TeamRegistrationAdmin(admin.ModelAdmin):
         'primary_tshirt_size',
         'teammate_tshirt_size',
         'debate_topic',
+        'stance',
         'debate_date',
         'debate_time',
         'classroom',
@@ -66,7 +84,7 @@ class TeamRegistrationAdmin(admin.ModelAdmin):
     search_fields = ('team_name', 'primary_name', 'primary_email', 'generated_username', 'institution', 'referral_code')
     list_per_page = 25
     ordering = ('-id',)
-    actions = [approve_teams, revoke_teams]
+    actions = [approve_teams, revoke_teams, delete_registrations]
     date_hierarchy = None
 
     # ── Read-only fields ───────────────────────────────────────────────────────
@@ -104,6 +122,7 @@ class TeamRegistrationAdmin(admin.ModelAdmin):
             'classes': ('collapse',),
         }),
         ('🗣️ Debate Assignment', {
+            'description': 'Fill in the debate details for this team. These values are shown on the team\'s participant dashboard after login.',
             'fields': (
                 'debate_topic',
                 ('stance', 'classroom'),
