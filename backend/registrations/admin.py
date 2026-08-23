@@ -230,3 +230,20 @@ class TeamRegistrationAdmin(admin.ModelAdmin):
             f'<span style="background:{color};color:#fff;padding:2px 8px;'
             f'border-radius:8px;font-size:11px;">{obj.stance or "—"}</span>'
         )
+
+    # ── Stance dropdown for both list and detail views ─────────────────────────
+    STANCE_CHOICES = [
+        ('Pending', 'Pending'),
+        ('For (Proposition)', 'For (Proposition)'),
+        ('Against (Opposition)', 'Against (Opposition)'),
+    ]
+
+    def formfield_for_dbfield(self, db_field, request, **kwargs):
+        from django import forms
+        field = super().formfield_for_dbfield(db_field, request, **kwargs)
+        if db_field.name == 'stance' and field is not None:
+            field.widget = forms.Select(
+                choices=[('', '— Select Stance —')] + self.STANCE_CHOICES,
+                attrs={'style': 'min-width:160px;'}
+            )
+        return field
