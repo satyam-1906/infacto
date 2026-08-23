@@ -3,12 +3,15 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
 
 app = Flask(__name__)
+CORS(app)
+
 
 # SMTP configurations from environment
 EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')

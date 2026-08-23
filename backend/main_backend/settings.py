@@ -161,7 +161,7 @@ from corsheaders.defaults import default_headers
 CORS_ALLOW_HEADERS = list(default_headers) + ['x-admin-token']
 
 # 3. Decoupled Email Service Configuration
-EMAIL_SERVICE_URL = os.getenv('EMAIL_SERVICE_URL', 'http://localhost:5001/send-email')
+EMAIL_SERVICE_URL = os.getenv('EMAIL_SERVICE_URL', 'https://infacto-1.onrender.com/send-email')
 
 # 4. Production HTTPS Security Settings (auto-enabled when not in DEBUG mode)
 if not DEBUG:
