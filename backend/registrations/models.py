@@ -35,6 +35,9 @@ class TeamRegistration(models.Model):
     debate_date = models.CharField(max_length=100, default='TBD', blank=True, null=True)
     debate_time = models.CharField(max_length=100, default='TBD', blank=True, null=True)
     classroom = models.CharField(max_length=100, default='TBD', blank=True, null=True)
+    
+    # Optional Referral Code
+    referral_code = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return f"{self.team_name} - {self.primary_name}"
@@ -93,7 +96,8 @@ class TeamRegistration(models.Model):
                         'Teammate Name', 'Teammate Email', 'Teammate Mobile',
                         'Institution', 'Experience', 'Login ID', 'Password',
                         'Merch Opt-In', 'Primary Size', 'Teammate Size',
-                        'Debate Topic', 'Stance', 'Date', 'Time', 'Classroom'
+                        'Debate Topic', 'Stance', 'Date', 'Time', 'Classroom',
+                        'Referral Code'
                     ])
 
                 team_row = None
@@ -110,7 +114,8 @@ class TeamRegistration(models.Model):
                         self.teammate_name, self.teammate_email, self.teammate_mobile,
                         self.institution, self.experience, self.generated_username, plain_password or "Hidden",
                         merch_status, self.primary_tshirt_size or "-", self.teammate_tshirt_size or "-",
-                        self.debate_topic, self.stance, self.debate_date, self.debate_time, self.classroom
+                        self.debate_topic, self.stance, self.debate_date, self.debate_time, self.classroom,
+                        self.referral_code or "-"
                     ])
                 elif team_row:
                     ws.cell(row=team_row, column=12, value=merch_status)

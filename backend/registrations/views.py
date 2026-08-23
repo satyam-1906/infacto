@@ -55,6 +55,7 @@ def submit_registration(request):
             team_name = request.POST.get('team_name')
             institution = request.POST.get('institution')
             experience = request.POST.get('experience', '')
+            referral_code = request.POST.get('referral_code', '')
             
             # Merch Hooks
             add_merch = request.POST.get('add_merch') == 'on' or request.POST.get('add_merch') == 'true'
@@ -111,7 +112,8 @@ def submit_registration(request):
                 payment_screenshot=cloudinary_url,
                 add_merch=add_merch,
                 primary_tshirt_size=primary_tshirt_size,
-                teammate_tshirt_size=teammate_tshirt_size
+                teammate_tshirt_size=teammate_tshirt_size,
+                referral_code=referral_code
             )
             
             return JsonResponse({"status": "success", "message": "Registration received!"})
@@ -204,7 +206,8 @@ def get_all_registrations(request):
                 "debate_time": r.debate_time,
                 "classroom": r.classroom,
                 "is_approved": r.is_approved,
-                "generated_username": r.generated_username
+                "generated_username": r.generated_username,
+                "referral_code": r.referral_code or ""
             })
         return JsonResponse({"status": "success", "data": data})
     except Exception as e:
