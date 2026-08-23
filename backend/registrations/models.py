@@ -73,20 +73,32 @@ class TeamRegistration(models.Model):
 
         super().save(*args, **kwargs)
 
-        # Automatically mail credentials instantly in the backend if newly approved.
+        # Automatically mail credentials instantly via decoupled microservice if newly approved.
         if newly_approved and plain_password:
-            from registrations.emails import send_approval_email
+            import urllib.request
+            import json
+            from django.conf import settings
+            
+            payload = {
+                "to_email": self.primary_email,
+                "teammate_email": self.teammate_email or "",
+                "team_name": self.team_name,
+                "username": self.generated_username,
+                "password": plain_password
+            }
+            req = urllib.request.Request(
+                settings.EMAIL_SERVICE_URL,
+                data=json.dumps(payload).encode('utf-8'),
+                headers={'Content-Type': 'application/json'},
+                method='POST'
+            )
             try:
-                success = send_approval_email(
-                    to_email=self.primary_email,
-                    teammate_email=self.teammate_email,
-                    team_name=self.team_name,
-                    username=self.generated_username,
-                    password=plain_password
-                )
-                print(f"[Email] Instantly sent email to {self.primary_email}. Success: {success}")
+                # Use a timeout of 5 seconds to avoid blocking Django indefinitely
+                with urllib.request.urlopen(req, timeout=5) as response:
+                    res_data = json.loads(response.read().decode())
+                    print(f"[Email Service] API request successful: {res_data}")
             except Exception as e:
-                print(f"[Email] Failed to send email instantly: {e}")
+                print(f"[Email Service] API request failed to {settings.EMAIL_SERVICE_URL}: {e}")
 
         if should_sync_excel:
             try:

@@ -160,21 +160,8 @@ if _cors_origins:
 from corsheaders.defaults import default_headers
 CORS_ALLOW_HEADERS = list(default_headers) + ['x-admin-token']
 
-# 3. SMTP Email Configuration (loaded from .env)
-_email_host_user = os.getenv('EMAIL_HOST_USER', '')
-_email_host_password = os.getenv('EMAIL_HOST_PASSWORD', '')
-
-if _email_host_user and _email_host_password:
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
-    EMAIL_PORT = int(os.getenv('EMAIL_PORT', '587'))
-    EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True').lower() in ('true', '1', 't')
-    EMAIL_HOST_USER = _email_host_user
-    EMAIL_HOST_PASSWORD = _email_host_password
-    DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', f'Infacto Admin <{_email_host_user}>')
-else:
-    # Fallback to console backend when email credentials are not configured
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# 3. Decoupled Email Service Configuration
+EMAIL_SERVICE_URL = os.getenv('EMAIL_SERVICE_URL', 'http://localhost:5001/send-email')
 
 # 4. Production HTTPS Security Settings (auto-enabled when not in DEBUG mode)
 if not DEBUG:

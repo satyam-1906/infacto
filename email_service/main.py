@@ -1,13 +1,24 @@
-from django.core.mail import EmailMultiAlternatives
-from django.template.loader import render_to_string
-from django.utils.html import strip_tags
-from django.conf import settings
+import os
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from flask import Flask, request, jsonify
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+
+app = Flask(__name__)
+
+# SMTP configurations from environment
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True').lower() in ('true', '1', 't')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', '')
 
 def send_approval_email(to_email, teammate_email, team_name, username, password):
-    """
-    Sends a styled HTML credentials email to both the primary registrant
-    and the teammate (if they provided an email).
-    """
     subject = f"Infacto 5.0 - Registration Approved (Team: {team_name})"
     
     # Recipient list
@@ -171,45 +182,89 @@ def send_approval_email(to_email, teammate_email, team_name, username, password)
     </body>
     </html>
     """
-    
-    # Plain text version for email clients that do not render HTML
+
     text_content = f"""
     Infacto 5.0 - Registration Approved!
-    
+
     Dear Team,
-    
+
     We are excited to inform you that your registration for Infacto 5.0 has been approved by the administrators.
-    
+
     Here are your credentials to log in to your participant dashboard:
-    
+
     Dashboard Link: https://infacto-six.vercel.app/login.html
     Team Name: {team_name}
     Login ID: {username}
     Password: {password}
-    
+
     Please keep these details secure.
-    
+
     For support, contact:
     - Rudraksh Gupta: +91 7060109792
     - Aryan Srivastava: +91 9555611243
     - Email: orator@iiitn.ac.in
-    
+
     Orator Club, IIIT Nagpur
     """
-    
-    # Construct the Django EmailMessage
-    msg = EmailMultiAlternatives(
-        subject=subject,
-        body=text_content,
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        to=recipients
-    )
-    msg.attach_alternative(html_content, "text/html")
-    
+
+    # Create Message container
+    msg = MIMEMultipart('alternative')
+    msg['Subject'] = subject
+    msg['From'] = DEFAULT_FROM_EMAIL or EMAIL_HOST_USER
+    msg['To'] = ", ".join(recipients)
+
+    # Attach parts
+    part1 = MIMEText(text_content, 'plain')
+    part2 = MIMEText(html_content, 'html')
+    msg.attach(part1)
+    msg.attach(part2)
+
+    # Connect to server and send
     try:
-        msg.send(fail_silently=False)
-        print(f"[Email] Approval credentials email sent successfully to {recipients}.")
+        if EMAIL_USE_TLS:
+            server = smtplib.SMTP(EMAIL_HOST, EMAIL_PORT, timeout=10)
+            server.starttls()
+        else:
+            server = smtplib.SMTP(EMAIL_HOST, EMAIL_PORT, timeout=10)
+
+        if EMAIL_HOST_USER and EMAIL_HOST_PASSWORD:
+            server.login(EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
+
+        server.sendmail(EMAIL_HOST_USER, recipients, msg.as_string())
+        server.quit()
         return True
     except Exception as e:
-        print(f"[Email] Failed to send approval email to {recipients}: {e}")
+        print(f"Failed to send email to {recipients}: {e}")
         return False
+
+@app.route('/health', methods=['GET'])
+def health():
+    return jsonify({"status": "healthy"}), 200
+
+@app.route('/send-email', methods=['POST'])
+def handle_send_email():
+    data = request.get_json() or {}
+    to_email = data.get('to_email')
+    teammate_email = data.get('teammate_email')
+    team_name = data.get('team_name')
+    username = data.get('username')
+    password = data.get('password')
+
+    if not all([to_email, team_name, username, password]):
+        return jsonify({"status": "error", "message": "Missing required fields."}), 400
+
+    # If SMTP username/password are not set, log and return fallback success (like console backend)
+    if not EMAIL_HOST_USER or not EMAIL_HOST_PASSWORD:
+        print(f"[Console Fallback] Would have sent credentials to {to_email} and {teammate_email} for team '{team_name}'")
+        return jsonify({"status": "success", "message": "Mock email output to console (credentials not configured)."}), 200
+
+    success = send_approval_email(to_email, teammate_email, team_name, username, password)
+    if success:
+        return jsonify({"status": "success", "message": "Email sent successfully."}), 200
+    else:
+        return jsonify({"status": "error", "message": "SMTP transmission failed. Check server logs."}), 500
+
+if __name__ == '__main__':
+    port = int(os.getenv('PORT', 5001))
+    # Listen on all interfaces
+    app.run(host='0.0.0.0', port=port, debug=True)
