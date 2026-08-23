@@ -9,4 +9,7 @@ urlpatterns = [
     # Admin API endpoints
     path('admin/registrations/', views.get_all_registrations, name='admin_registrations'),
     path('admin/toggle-approval/', views.toggle_approval, name='admin_toggle_approval'),
+
+    # Health Check / KeepAlive endpoint
+    path('health/', views.health_check, name='health_check'),
 ]

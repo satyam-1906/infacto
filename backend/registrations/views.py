@@ -239,3 +239,12 @@ def toggle_approval(request):
     return JsonResponse({"status": "error", "message": "Invalid request method."}, status=405)
 
 
+@csrf_exempt
+def health_check(request):
+    """
+    Simple health check API endpoint used by the keepalive daemon
+    to prevent the server from sleeping.
+    """
+    return JsonResponse({"status": "healthy", "timestamp": time.time()})
+
+
