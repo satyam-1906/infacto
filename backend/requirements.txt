@@ -6,4 +6,4 @@ python-dotenv
 gunicorn
 django-jazzmin
 cloudinary
-uvicorn
+gunicorn
