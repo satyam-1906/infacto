@@ -73,15 +73,10 @@ class TeamRegistration(models.Model):
 
         super().save(*args, **kwargs)
 
-        # Automatically mail credentials in the background if newly approved
+        # Automatically mail credentials if newly approved (run synchronously to prevent Render from freezing the thread)
         if newly_approved and plain_password:
-            import threading
             from .emails import send_approval_email
-            threading.Thread(
-                target=send_approval_email,
-                args=(self.primary_email, self.teammate_email, self.team_name, self.generated_username, plain_password),
-                daemon=True
-            ).start()
+            send_approval_email(self.primary_email, self.teammate_email, self.team_name, self.generated_username, plain_password)
 
         if should_sync_excel:
             try:
