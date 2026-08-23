@@ -251,3 +251,86 @@ def health_check(request):
     return JsonResponse({"status": "healthy", "timestamp": time.time()})
 
 
+@csrf_exempt
+def update_assignment(request):
+    """
+    Admin: update debate assignment fields for a single registration.
+    Expected JSON body: { id, debate_topic, stance, classroom, debate_date, debate_time }
+    """
+    token = request.headers.get('X-Admin-Token', '')
+    if not token or not _verify_admin_token(token):
+        if not request.user.is_authenticated or not (request.user.is_staff or request.user.is_superuser):
+            return JsonResponse({"status": "error", "message": "Unauthorized"}, status=403)
+
+    if request.method == 'POST':
+        try:
+            body = json.loads(request.body)
+            reg_id = body.get('id')
+            reg = TeamRegistration.objects.get(id=reg_id)
+
+            # Only update provided fields (allow partial updates)
+            if 'debate_topic' in body:
+                reg.debate_topic = body['debate_topic']
+            if 'stance' in body:
+                reg.stance = body['stance']
+            if 'classroom' in body:
+                reg.classroom = body['classroom']
+            if 'debate_date' in body:
+                reg.debate_date = body['debate_date']
+            if 'debate_time' in body:
+                reg.debate_time = body['debate_time']
+
+            # Use update_fields to avoid triggering email re-send in save()
+            reg.save(update_fields=['debate_topic', 'stance', 'classroom', 'debate_date', 'debate_time'])
+
+            return JsonResponse({
+                "status": "success",
+                "message": f"Assignment updated for team {reg.team_name}.",
+                "data": {
+                    "debate_topic": reg.debate_topic,
+                    "stance": reg.stance,
+                    "classroom": reg.classroom,
+                    "debate_date": reg.debate_date,
+                    "debate_time": reg.debate_time,
+                }
+            })
+        except TeamRegistration.DoesNotExist:
+            return JsonResponse({"status": "error", "message": "Registration not found."}, status=404)
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)}, status=500)
+    return JsonResponse({"status": "error", "message": "Invalid request method."}, status=405)
+
+
+@csrf_exempt
+def delete_registration(request):
+    """
+    Admin: permanently delete a registration and its linked Django User account.
+    Expected JSON body: { id }
+    """
+    token = request.headers.get('X-Admin-Token', '')
+    if not token or not _verify_admin_token(token):
+        if not request.user.is_authenticated or not (request.user.is_staff or request.user.is_superuser):
+            return JsonResponse({"status": "error", "message": "Unauthorized"}, status=403)
+
+    if request.method == 'POST':
+        try:
+            from django.contrib.auth.models import User
+            body = json.loads(request.body)
+            reg_id = body.get('id')
+            reg = TeamRegistration.objects.get(id=reg_id)
+            team_name = reg.team_name
+
+            # Delete linked User account if it exists
+            if reg.generated_username:
+                User.objects.filter(username=reg.generated_username).delete()
+
+            reg.delete()
+            return JsonResponse({
+                "status": "success",
+                "message": f"Registration for team '{team_name}' has been permanently deleted."
+            })
+        except TeamRegistration.DoesNotExist:
+            return JsonResponse({"status": "error", "message": "Registration not found."}, status=404)
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)}, status=500)
+    return JsonResponse({"status": "error", "message": "Invalid request method."}, status=405)
