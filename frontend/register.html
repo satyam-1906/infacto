@@ -181,7 +181,28 @@
                     <div class="bg-white p-4 rounded-xl shadow-lg hover:scale-105 transition-transform duration-300 max-w-[280px]">
                         <img src="assets/qr final.jpeg" alt="Payment QR Code" class="w-full h-auto rounded-lg">
                     </div>
-                    <p id="registration-fee-display" class="font-headline-lg text-yellow-600 mt-6 text-3xl font-bold tracking-widest">Rs 599</p>
+                    <!-- Itemised Cost Table -->
+                    <div class="w-full max-w-sm mt-6 border border-zinc-800 rounded-xl bg-zinc-950 p-4 font-body-md overflow-hidden text-sm">
+                        <div class="flex justify-between pb-2 text-gray-500 font-bold uppercase tracking-wider text-xs border-b border-zinc-800">
+                            <span>Description</span>
+                            <span>Amount</span>
+                        </div>
+                        <!-- Base Fee Row -->
+                        <div class="flex justify-between py-3 text-gray-200 border-b border-zinc-900">
+                            <span>Team Registration Fee</span>
+                            <span class="font-semibold text-white">₹599</span>
+                        </div>
+                        <!-- Merch Row (Dynamic) -->
+                        <div id="merch-fee-row" class="hidden flex justify-between py-3 text-gray-200 border-b border-zinc-900 animate-fadeIn">
+                            <span id="merch-fee-desc">Merchandise (0 x T-Shirts)</span>
+                            <span id="merch-fee-amount" class="font-semibold text-white">₹0</span>
+                        </div>
+                        <!-- Total Payable -->
+                        <div class="flex justify-between pt-3.5 text-base font-bold text-yellow-500">
+                            <span>Total Payable</span>
+                            <span id="total-payable-amount">₹599</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Proof of Payment -->
@@ -250,6 +271,7 @@
                     } else {
                         merchSizesContainer.classList.add('hidden');
                     }
+                    calculateFee();
                 });
             }
             
@@ -353,11 +375,15 @@
             // Dynamic Registration Fee Calculation
             const primarySizeSelect = document.querySelector('select[name="primary_tshirt_size"]');
             const teammateSizeSelect = document.querySelector('select[name="teammate_tshirt_size"]');
-            const feeDisplay = document.getElementById('registration-fee-display');
             const merchCheckbox = document.getElementById('addMerchCheckbox');
+            
+            const merchFeeRow = document.getElementById('merch-fee-row');
+            const merchFeeDesc = document.getElementById('merch-fee-desc');
+            const merchFeeAmount = document.getElementById('merch-fee-amount');
+            const totalPayableAmount = document.getElementById('total-payable-amount');
 
             function calculateFee() {
-                let baseFee = 599;
+                const baseFee = 599;
                 let merchCount = 0;
 
                 if (merchCheckbox && merchCheckbox.checked) {
@@ -365,13 +391,20 @@
                     if (teammateSizeSelect.value && teammateSizeSelect.value !== "Dont want" && teammateSizeSelect.value !== "Select Size") merchCount++;
                 }
 
-                if (merchCount === 0) {
-                    feeDisplay.textContent = `Rs 599`;
-                } else if (merchCount === 1) {
-                    feeDisplay.textContent = `Rs 599 + Rs 449 = Rs 1048`;
-                } else if (merchCount === 2) {
-                    feeDisplay.textContent = `Rs 599 + Rs 898 = Rs 1497`;
+                const merchTotal = merchCount * 449;
+                const grandTotal = baseFee + merchTotal;
+
+                if (merchCount > 0) {
+                    merchFeeDesc.textContent = `Merchandise (${merchCount} x T-Shirt${merchCount > 1 ? 's' : ''})`;
+                    merchFeeAmount.textContent = `₹${merchTotal}`;
+                    merchFeeRow.classList.remove('hidden');
+                    merchFeeRow.classList.add('flex');
+                } else {
+                    merchFeeRow.classList.add('hidden');
+                    merchFeeRow.classList.remove('flex');
                 }
+
+                totalPayableAmount.textContent = `₹${grandTotal}`;
             }
 
             if (primarySizeSelect) primarySizeSelect.addEventListener('change', calculateFee);
