@@ -333,7 +333,7 @@
         <section id="gemini-feature"
             class="relative w-full overflow-hidden bg-[#000000] mt-12 md:mt-24 scroll-mt-24 px-4 md:px-0">
             <div class="relative w-full flex items-center justify-center pointer-events-none max-w-[1920px] mx-auto">
-                <img src="final_banner.png" alt="Infacto Extra Feature"
+                <img src="assets/final_banner.png" alt="Infacto Extra Feature"
                     class="w-full h-auto object-cover rounded-xl md:rounded-none max-w-[1920px]">
             </div>
         </section>
@@ -656,41 +656,103 @@
             requestAnimationFrame(renderLoop);
         };
 
+        const INITIAL_FRAMES = 15;
         const loadImages = () => {
             const progressBar = document.getElementById('loader-progress');
 
-            for (let i = startFrame; i <= endFrame; i++) {
+            // Initialize image array with nulls
+            for (let i = 0; i < frameCount; i++) {
+                images.push(null);
+            }
+
+            const loadFrame = (index, isInitial = false) => {
+                if (images[index] !== null) return;
                 const img = new Image();
-                // Load frames e.g. "assets/animation_frames/ezgif-frame-016.png"
-                img.src = `assets/animation_frames/ezgif-frame-${pad(i, 3)}.png`;
+                images[index] = img; // mark as loading
+                
+                const frameNum = startFrame + index;
+                img.src = `assets/animation_frames/ezgif-frame-${pad(frameNum, 3)}.png`;
 
                 img.onload = () => {
-                    imagesLoaded++;
-                    progressBar.style.width = `${(imagesLoaded / frameCount) * 100}%`;
-
-                    if (imagesLoaded === frameCount) {
-                        // All images loaded
-                        document.getElementById('loader').style.opacity = '0';
-                        setTimeout(() => document.getElementById('loader').style.display = 'none', 500);
-
-                        // Kick off smooth render loop
-                        renderLoop();
+                    img.isLoaded = true;
+                    if (isInitial) {
+                        imagesLoaded++;
+                        progressBar.style.width = `${(imagesLoaded / INITIAL_FRAMES) * 100}%`;
+                        
+                        if (imagesLoaded === INITIAL_FRAMES) {
+                            document.getElementById('loader').style.opacity = '0';
+                            setTimeout(() => document.getElementById('loader').style.display = 'none', 500);
+                            
+                            renderLoop();
+                            loadRemainingFrames();
+                        }
                     }
                 };
-
+                
                 img.onerror = () => {
                     console.error('Failed to load frame:', img.src);
-                    imagesLoaded++;
+                    img.isLoaded = true;
+                    if (isInitial) {
+                        imagesLoaded++;
+                        if (imagesLoaded === INITIAL_FRAMES) {
+                            document.getElementById('loader').style.opacity = '0';
+                            setTimeout(() => document.getElementById('loader').style.display = 'none', 500);
+                            
+                            renderLoop();
+                            loadRemainingFrames();
+                        }
+                    }
                 };
+            };
 
-                images.push(img);
+            for (let i = 0; i < INITIAL_FRAMES && i < frameCount; i++) {
+                loadFrame(i, true);
             }
+            
+            const loadRemainingFrames = () => {
+                let currIndex = INITIAL_FRAMES;
+                const batchLoad = () => {
+                    if (currIndex >= frameCount) return;
+                    for (let j = 0; j < 3 && currIndex < frameCount; j++, currIndex++) {
+                        loadFrame(currIndex, false);
+                    }
+                    setTimeout(batchLoad, 100);
+                };
+                batchLoad();
+            };
+            
+            window.demandLoadFrame = loadFrame;
         };
 
         const drawFrame = (index) => {
-            if (images[index]) {
+            if (images[index] && images[index].isLoaded) {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 ctx.drawImage(images[index], 0, 0);
+            } else {
+                if (!images[index] && window.demandLoadFrame) {
+                    window.demandLoadFrame(index, false);
+                    // Prefetch ahead
+                    for(let i = 1; i <= 3; i++) {
+                        if(index + i < frameCount && !images[index + i]) {
+                            window.demandLoadFrame(index + i, false);
+                        }
+                    }
+                }
+                let closestDist = Infinity;
+                let closestImg = null;
+                for (let i = 0; i < frameCount; i++) {
+                    if (images[i] && images[i].isLoaded) {
+                        const dist = Math.abs(i - index);
+                        if (dist < closestDist) {
+                            closestDist = dist;
+                            closestImg = images[i];
+                        }
+                    }
+                }
+                if (closestImg) {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(closestImg, 0, 0);
+                }
             }
         };
 
