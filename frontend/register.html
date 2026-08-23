@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infacto - Register</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'headline-lg': ['Libre Caslon Text', 'serif'],
+                        'body-lg': ['Work Sans', 'sans-serif'],
+                        'body-md': ['Work Sans', 'sans-serif'],
+                        'label-md': ['Work Sans', 'sans-serif']
+                    },
+                    spacing: { 'container-max': '1280px' }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            background-color: #000;
+        }
+        /* Registration Form CSS */
+        .classical-input {
+            border: none; border-bottom: 1px solid #444444; background-color: transparent; border-radius: 0;
+            padding-left: 0; padding-right: 0; transition: border-color 0.3s ease; color: #ffffff;
+        }
+        .classical-input::placeholder { color: #888888; }
+        .classical-input:focus { outline: none; box-shadow: none; border-bottom: 2px solid #ffffff; }
+        
+        .file-upload-area {
+            border: 1px dashed #444444; transition: all 0.3s ease; background-color: #111111;
+        }
+        .file-upload-area:hover, .file-upload-area.dragover {
+            border-color: #ffffff; background-color: #222222;
+        }
+    </style>
+</head>
+<body>
+    <!-- Generic Transparent Navigation Bar -->
+    <nav class="fixed top-0 left-0 w-full z-50 flex items-center justify-end py-4 px-4 md:py-6 md:px-12 bg-transparent pointer-events-none">
+        <div class="flex items-center pointer-events-auto drop-shadow-md">
+            <a href="index.html" class="text-white/80 text-[11px] md:text-base font-medium hover:text-white transition-colors duration-200 font-body-lg flex items-center gap-1 md:gap-2 bg-black/60 px-3 md:px-4 py-1.5 md:py-2 rounded-full border border-white/10 backdrop-blur-sm uppercase tracking-wider">
+                <span class="material-symbols-outlined" style="font-size: 16px;">arrow_back</span>
+                Back to Site
+            </a>
+        </div>
+    </nav>
+
+    <!-- Register Section -->
+    <section class="relative w-full min-h-screen flex items-center justify-center py-24 px-6 md:px-12 bg-[#000000] overflow-hidden">
+        <div class="w-full max-w-3xl p-8 md:p-12 relative z-10 bg-[#0a0a0a] border border-[#222222] rounded-lg shadow-2xl">
+            <!-- Header Section -->
+            <div class="text-center mb-12">
+                <h1 class="font-headline-lg text-4xl md:text-5xl text-white mb-4 mt-8">Registration</h1>
+                <p class="font-body-md text-gray-300 max-w-lg mx-auto">
+                    Secure your position in the upcoming Infacto debate competition. Please provide the required credentials below.
+                </p>
+                <div class="flex items-center justify-center gap-4 mt-8 mb-8">
+                    <div class="h-px bg-gray-700 w-16"></div>
+                    <div class="w-2 h-2 bg-yellow-600 rotate-45"></div>
+                    <div class="h-px bg-gray-700 w-16"></div>
+                </div>
+            </div>
+
+            <!-- Form -->
+            <form action="#" class="space-y-8" id="registrationForm" method="POST">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-8">
+                    <!-- Participant Names -->
+                    <div class="flex flex-col group">
+                        <label class="font-label-md text-gray-300 mb-1 group-focus-within:text-white transition-colors" for="fullName">Your Name</label>
+                        <input class="classical-input font-body-md w-full py-2" id="fullName" name="primary_name" placeholder="Aarav Sharma" required="" type="text"/>
+                    </div>
+                    <div class="flex flex-col group">
+                        <label class="font-label-md text-gray-300 mb-1 group-focus-within:text-white transition-colors" for="teammateName">Teammate Name</label>
+                        <input class="classical-input font-body-md w-full py-2" id="teammateName" name="teammate_name" placeholder="Priya Patel" required="" type="text"/>
+                    </div>
+
+                    <!-- Email Addresses -->
+                    <div class="flex flex-col group">
+                        <label class="font-label-md text-gray-300 mb-1 group-focus-within:text-white transition-colors" for="emailAddress">Your Email Address</label>
+                        <input class="classical-input font-body-md w-full py-2" id="emailAddress" name="primary_email" placeholder="contact@example.com" required="" type="email"/>
+                    </div>
+                    <div class="flex flex-col group">
+                        <label class="font-label-md text-gray-300 mb-1 group-focus-within:text-white transition-colors" for="teammateEmailAddress">Teammate Email Address</label>
+                        <input class="classical-input font-body-md w-full py-2" id="teammateEmailAddress" name="teammate_email" placeholder="teammate@example.com" required="" type="email"/>
+                    </div>
+
+                    <!-- Mobile Numbers -->
+                    <div class="flex flex-col group">
+                        <label class="font-label-md text-gray-300 mb-1 group-focus-within:text-white transition-colors" for="mobileNumber">Your Mobile Number</label>
+                        <input class="classical-input font-body-md w-full py-2" id="mobileNumber" name="primary_mobile" placeholder="9876543210" required="" type="tel" pattern="\d{10}" title="Please enter exactly 10 digits"/>
+                    </div>
+                    <div class="flex flex-col group">
+                        <label class="font-label-md text-gray-300 mb-1 group-focus-within:text-white transition-colors" for="teammateMobileNumber">Teammate Mobile Number</label>
+                        <input class="classical-input font-body-md w-full py-2" id="teammateMobileNumber" name="teammate_mobile" placeholder="9876543211" required="" type="tel" pattern="\d{10}" title="Please enter exactly 10 digits"/>
+                    </div>
+
+                    <!-- Team Details -->
+                    <div class="flex flex-col group">
+                        <label class="font-label-md text-gray-300 mb-1 group-focus-within:text-white transition-colors" for="teamName">Team Name</label>
+                        <input class="classical-input font-body-md w-full py-2" id="teamName" name="team_name" placeholder="The Rhetoricians" required="" type="text"/>
+                    </div>
+                    <div class="flex flex-col group">
+                        <label class="font-label-md text-gray-300 mb-1 group-focus-within:text-white transition-colors" for="institution">School / College Name</label>
+                        <input class="classical-input font-body-md w-full py-2" id="institution" name="institution" placeholder="University of ..." required="" type="text"/>
+                    </div>
+                </div>
+
+                <!-- Experience -->
+                <div class="flex flex-col group mt-8">
+                    <label class="font-label-md text-gray-300 mb-2 group-focus-within:text-white transition-colors" for="experience">Past Debate Experience</label>
+                    <textarea class="border border-gray-700 bg-[#050505] rounded-md p-3 font-body-md text-white placeholder-gray-500 focus:border-white focus:ring-0 transition-colors resize-y" id="experience" name="experience" placeholder="Briefly detail any past tournaments or accolades..." rows="3" required=""></textarea>
+                </div>
+
+                
+                <!-- Merchandise Opt-In -->
+                <div class="mt-8 pt-6 border-t border-[#222222]">
+                    <div class="flex items-center justify-between bg-[#0f0f0f] p-5 rounded-lg border border-gray-800 hover:border-yellow-600 transition-colors cursor-pointer select-none" id="merchToggleContainer">
+                        <div class="flex flex-col pr-4">
+                            <span class="font-headline-lg text-xl md:text-2xl text-white mb-1">Add Infacto Merch</span>
+                            <span class="font-body-md text-xs md:text-sm text-gray-400">Exclusive 100% Cotton event t-shirts for your team</span>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer pointer-events-none shrink-0">
+                            <input type="checkbox" id="addMerchCheckbox" name="add_merch" class="sr-only peer">
+                            <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-yellow-600"></div>
+                        </label>
+                    </div>
+
+                    <!-- Size Selectors (Hidden by default) -->
+                    <div id="merchSizesContainer" class="hidden mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-[#050505] border border-[#222222] rounded-lg">
+                        <div class="flex flex-col group">
+                            <label class="font-label-md text-gray-300 mb-2 group-focus-within:text-white transition-colors">Your T-Shirt Size (Rs 449)</label>
+                            <select name="primary_tshirt_size" class="border border-gray-700 bg-transparent rounded-md p-3 font-body-md text-white focus:border-white focus:ring-0 transition-colors w-full cursor-pointer">
+                                <option value="" disabled selected class="text-black">Select Size</option>
+                                <option value="Dont want" class="text-black">Dont want</option>
+                                <option value="XS" class="text-black">XS</option>
+                                <option value="S" class="text-black">S</option>
+                                <option value="M" class="text-black">M</option>
+                                <option value="L" class="text-black">L</option>
+                                <option value="XL" class="text-black">XL</option>
+                                <option value="XXL" class="text-black">XXL</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col group">
+                            <label class="font-label-md text-gray-300 mb-2 group-focus-within:text-white transition-colors">Teammate T-Shirt Size (Rs 449)</label>
+                            <select name="teammate_tshirt_size" class="border border-gray-700 bg-transparent rounded-md p-3 font-body-md text-white focus:border-white focus:ring-0 transition-colors w-full cursor-pointer">
+                                <option value="" disabled selected class="text-black">Select Size</option>
+                                <option value="Dont want" class="text-black">Dont want</option>
+                                <option value="XS" class="text-black">XS</option>
+                                <option value="S" class="text-black">S</option>
+                                <option value="M" class="text-black">M</option>
+                                <option value="L" class="text-black">L</option>
+                                <option value="XL" class="text-black">XL</option>
+                                <option value="XXL" class="text-black">XXL</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QR Code for Payment -->
+                <div class="mt-12 flex flex-col items-center border-t border-[#222222] pt-12 pb-4">
+                    <p class="font-headline-lg text-white mb-2 text-2xl">Registration Fee</p>
+                    <p class="font-label-md text-gray-400 mb-6 text-center max-w-sm">Please scan the QR code to complete your payment before uploading the proof below.</p>
+                    <p class="font-headline-lg text-white mb-4 text-xl tracking-wider uppercase">Rudraksh Gupta</p>
+                    <div class="bg-white p-4 rounded-xl shadow-lg hover:scale-105 transition-transform duration-300 max-w-[280px]">
+                        <img src="assets/qr final.jpeg" alt="Payment QR Code" class="w-full h-auto rounded-lg">
+                    </div>
+                    <p id="registration-fee-display" class="font-headline-lg text-yellow-600 mt-6 text-3xl font-bold tracking-widest">Rs 599</p>
+                </div>
+
+                <!-- Proof of Payment -->
+                <div class="mt-8">
+                    <label class="font-label-md text-gray-300 mb-2 block">Proof of Payment</label>
+                    <div class="file-upload-area rounded-lg p-8 flex flex-col items-center justify-center text-center cursor-pointer relative overflow-hidden" id="dropZone">
+                        <div id="uploadContent" class="flex flex-col items-center w-full transition-opacity duration-300">
+                            <span class="material-symbols-outlined text-gray-500 mb-2" style="font-size: 32px; font-variation-settings: 'FILL' 0;">upload_file</span>
+                            <p class="font-body-md text-gray-400 mb-1">Drag and drop your screenshot here, or</p>
+                            <label class="font-label-md text-yellow-600 border border-yellow-600 rounded px-4 py-2 mt-2 cursor-pointer hover:bg-yellow-600 hover:text-black transition-colors inline-block" for="paymentProof">
+                                Browse Files
+                            </label>
+                            <input accept="image/*, .pdf" class="hidden" id="paymentProof" name="payment_screenshot" type="file"/>
+                            <p class="font-label-md text-gray-500 mt-2 text-xs" id="fileNameDisplay">Accepted formats: JPG, PNG, PDF</p>
+                        </div>
+                        <div id="previewContainer" class="hidden absolute inset-0 bg-[#0a0a0a] flex-col items-center justify-center p-4">
+                            <!-- Google Form Style Chip -->
+                            <div class="flex items-center bg-[#1a1a1a] border border-gray-700 rounded-full pl-4 pr-2 py-2 w-full max-w-sm shadow hover:bg-[#222222] transition-colors">
+                                <span class="material-symbols-outlined text-red-500 mr-3 shrink-0" style="font-size: 22px;">image</span>
+                                <a id="imagePreviewLink" target="_blank" href="#" class="font-body-md text-gray-300 hover:text-blue-400 hover:underline transition-colors truncate flex-1 block text-left">
+                                </a>
+                                <button type="button" id="removeFileBtn" class="text-gray-500 hover:bg-gray-700 hover:text-white rounded-full p-1.5 ml-3 transition-colors flex items-center justify-center shrink-0 border border-transparent" title="Remove file">
+                                    <span class="material-symbols-outlined" style="font-weight: 500; font-size: 18px;">close</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Action -->
+                <div class="pt-8 flex justify-center border-t border-gray-800 mt-8">
+                    <button class="font-headline-lg text-lg bg-white text-black rounded px-12 py-4 hover:bg-gray-200 active:scale-[0.98] transition-all duration-300 w-full md:w-auto flex items-center justify-center gap-2" type="submit">
+                        Submit Registration
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0; font-size: 24px;">arrow_forward</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Full Screen Success Overlay -->
+    <div id="successOverlay" class="fixed inset-0 z-[100] bg-black hidden flex-col items-center justify-center p-6 text-center">
+        <span class="material-symbols-outlined text-green-500 mb-6" style="font-size: 80px; font-variation-settings: 'FILL' 1;">check_circle</span>
+        <h2 class="font-headline-lg text-4xl md:text-5xl text-white mb-4">Registration Successful!</h2>
+        <p class="font-body-lg text-gray-300 max-w-md mx-auto mb-10">Your team's credentials and payment proof have been securely submitted to the Admin portal.</p>
+        <button onclick="document.getElementById('successOverlay').classList.add('hidden'); document.getElementById('successOverlay').classList.remove('flex');" class="font-headline-lg text-lg bg-white text-black rounded px-10 py-3 hover:bg-gray-200 transition-colors">Close Screen</button>
+    </div>
+
+    <!-- Form Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dropZone = document.getElementById('dropZone');
+            const fileInput = document.getElementById('paymentProof');
+            const fileNameDisplay = document.getElementById('fileNameDisplay');
+            
+            
+            const merchToggleContainer = document.getElementById('merchToggleContainer');
+            const addMerchCheckbox = document.getElementById('addMerchCheckbox');
+            const merchSizesContainer = document.getElementById('merchSizesContainer');
+            
+            if (merchToggleContainer) {
+                merchToggleContainer.addEventListener('click', () => {
+                    addMerchCheckbox.checked = !addMerchCheckbox.checked;
+                    if (addMerchCheckbox.checked) {
+                        merchSizesContainer.classList.remove('hidden');
+                    } else {
+                        merchSizesContainer.classList.add('hidden');
+                    }
+                });
+            }
+            
+            if(dropZone && fileInput) {
+                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                    dropZone.addEventListener(eventName, preventDefaults, false);
+                    document.body.addEventListener(eventName, preventDefaults, false);
+                });
+                function preventDefaults(e) { e.preventDefault(); e.stopPropagation(); }
+                ['dragenter', 'dragover'].forEach(eventName => dropZone.addEventListener(eventName, () => dropZone.classList.add('dragover'), false));
+                ['dragleave', 'drop'].forEach(eventName => dropZone.addEventListener(eventName, () => dropZone.classList.remove('dragover'), false));
+                dropZone.addEventListener('drop', (e) => handleFiles(e.dataTransfer.files), false);
+                fileInput.addEventListener('change', function() { handleFiles(this.files); });
+                function handleFiles(files) {
+                    if (files.length > 0) {
+                        const file = files[0];
+                        fileNameDisplay.textContent = 'Selected: ' + file.name;
+                        fileNameDisplay.classList.replace('text-gray-500', 'text-white');
+                        const fileUrl = URL.createObjectURL(file);
+                        const linkEl = document.getElementById('imagePreviewLink');
+                        linkEl.href = fileUrl;
+                        linkEl.title = 'View ' + file.name;
+                        linkEl.textContent = file.name;
+                        
+                        document.getElementById('uploadContent').classList.add('hidden');
+                        document.getElementById('previewContainer').classList.remove('hidden');
+                        document.getElementById('previewContainer').classList.add('flex');
+                    }
+                }
+
+                document.getElementById('removeFileBtn').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    fileInput.value = '';
+                    fileNameDisplay.textContent = 'Accepted formats: JPG, PNG, PDF';
+                    fileNameDisplay.classList.replace('text-white', 'text-gray-500');
+                    document.getElementById('previewContainer').classList.add('hidden');
+                    document.getElementById('previewContainer').classList.remove('flex');
+                    document.getElementById('uploadContent').classList.remove('hidden');
+                });
+                const form = document.getElementById('registrationForm');
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    
+                    const btn = form.querySelector('button[type="submit"]');
+                    const originalText = btn.innerHTML;
+                    btn.innerHTML = `<span class="material-symbols-outlined animate-spin" style="font-variation-settings: 'FILL' 0;">sync</span> Processing...`;
+                    btn.disabled = true;
+
+                    const formData = new FormData(form);
+
+                    fetch('http://127.0.0.1:8000/api/register/', {
+                        method: 'POST',
+                        body: formData,
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            btn.innerHTML = `<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">check_circle</span> Success!`;
+                            btn.classList.replace('bg-white', 'bg-green-500');
+                            btn.classList.add('text-white');
+                            
+                            // Trigger full-screen success overlay instead of alert
+                            document.getElementById('successOverlay').classList.remove('hidden');
+                            document.getElementById('successOverlay').classList.add('flex');
+                            
+                            setTimeout(() => {
+                                btn.innerHTML = originalText;
+                                btn.disabled = false;
+                                btn.classList.replace('bg-green-500', 'bg-white');
+                                btn.classList.remove('text-white');
+                                form.reset();
+                                fileNameDisplay.textContent = 'Accepted formats: JPG, PNG, PDF';
+                                fileNameDisplay.classList.replace('text-white', 'text-gray-500');
+                                document.getElementById('previewContainer').classList.add('hidden');
+                                document.getElementById('previewContainer').classList.remove('flex');
+                                document.getElementById('uploadContent').classList.remove('hidden');
+                            }, 3000);
+                        } else {
+                            alert("Error: " + data.message);
+                            btn.innerHTML = originalText;
+                            btn.disabled = false;
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Fetch error:", error);
+                        alert("A network error occurred while submitting the registration.");
+                        btn.innerHTML = originalText;
+                        btn.disabled = false;
+                    });
+                });
+            }
+
+            // Dynamic Registration Fee Calculation
+            const primarySizeSelect = document.querySelector('select[name="primary_tshirt_size"]');
+            const teammateSizeSelect = document.querySelector('select[name="teammate_tshirt_size"]');
+            const feeDisplay = document.getElementById('registration-fee-display');
+            const merchCheckbox = document.getElementById('addMerchCheckbox');
+
+            function calculateFee() {
+                let baseFee = 599;
+                let merchCount = 0;
+
+                if (merchCheckbox && merchCheckbox.checked) {
+                    if (primarySizeSelect.value && primarySizeSelect.value !== "Dont want" && primarySizeSelect.value !== "Select Size") merchCount++;
+                    if (teammateSizeSelect.value && teammateSizeSelect.value !== "Dont want" && teammateSizeSelect.value !== "Select Size") merchCount++;
+                }
+
+                if (merchCount === 0) {
+                    feeDisplay.textContent = `Rs 599`;
+                } else if (merchCount === 1) {
+                    feeDisplay.textContent = `Rs 599 + Rs 449 = Rs 1048`;
+                } else if (merchCount === 2) {
+                    feeDisplay.textContent = `Rs 599 + Rs 898 = Rs 1497`;
+                }
+            }
+
+            if (primarySizeSelect) primarySizeSelect.addEventListener('change', calculateFee);
+            if (teammateSizeSelect) teammateSizeSelect.addEventListener('change', calculateFee);
+            if (merchCheckbox) merchCheckbox.addEventListener('change', calculateFee);
+        });
+    </script>
+</body>
+</html>

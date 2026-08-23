@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infacto - Login</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'headline-lg': ['Libre Caslon Text', 'serif'],
+                        'body-lg': ['Work Sans', 'sans-serif'],
+                        'body-md': ['Work Sans', 'sans-serif'],
+                        'label-md': ['Work Sans', 'sans-serif'],
+                        'display-lg': ['Libre Caslon Text', 'serif'],
+                        'headline-sm': ['Libre Caslon Text', 'serif']
+                    },
+                    spacing: { 'container-max': '1280px' }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            background-color: #000;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    
+        /* Premium Glowing Border Animation */
+        @keyframes border-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .animate-border-flow {
+            background-size: 200% 200%;
+            animation: border-flow 4s ease infinite;
+        }
+    </style>
+</head>
+<body class="bg-black text-white min-h-screen flex flex-col font-body-md antialiased">
+    
+    <!-- Generic Transparent Navigation Bar -->
+    <nav id="loginNav" class="fixed top-0 left-0 w-full z-50 flex items-center justify-end py-4 px-4 md:py-6 md:px-12 bg-transparent pointer-events-none">
+        <div class="flex items-center pointer-events-auto drop-shadow-md">
+            <a href="index.html" class="text-white/80 text-[11px] md:text-base font-medium hover:text-white transition-colors duration-200 font-body-lg flex items-center gap-1 md:gap-2 bg-black/60 px-3 md:px-4 py-1.5 md:py-2 rounded-full border border-white/10 backdrop-blur-sm uppercase tracking-wider">
+                <span class="material-symbols-outlined" style="font-size: 16px;">arrow_back</span>
+                Back to Site
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="loginContainer" class="flex-grow flex items-center justify-center px-6 py-24 z-10 relative">
+        <div class="w-full max-w-md">
+            <div class="text-center mb-12 flex flex-col justify-center items-center">
+                <h1 class="font-display-lg text-5xl md:text-6xl text-white mb-6">Login</h1>
+                <p class="font-headline-sm text-lg md:text-xl text-white/80 text-center mb-0 max-w-sm">Experience the thrill of Oxford Style debate at IIIT Nagpur.</p>
+            </div>
+            
+            <div id="loginError" class="text-red-500 text-center mb-4 transition-all"></div>
+            <form class="space-y-8" id="loginForm">
+                <div class="border border-white/20 rounded-xl p-8 space-y-8 bg-white/5 shadow-2xl backdrop-blur-sm">
+                    <div class="space-y-2">
+                        <label class="block font-headline-sm text-xl text-white" for="username">ID</label>
+                        <input class="w-full bg-transparent border-0 border-b-2 border-white/20 text-white font-body-lg text-lg py-3 px-0 focus:ring-0 focus:border-white transition-colors placeholder-white/30 rounded-none outline-none" id="username" placeholder="Enter your ID" type="text" required="">
+                    </div>
+                    
+                    <div class="space-y-2 mt-8">
+                        <label class="block font-headline-sm text-xl text-white" for="password">Password</label>
+                        <input class="w-full bg-transparent border-0 border-b-2 border-white/20 text-white font-body-lg text-lg py-3 px-0 focus:ring-0 focus:border-white transition-colors placeholder-white/30 rounded-none outline-none" id="password" placeholder="Enter your Password" type="password" required="">
+                    </div>
+                </div>
+                
+                <div class="pt-8">
+                    <button class="w-full bg-white text-black font-headline-sm text-lg py-4 px-8 rounded hover:bg-white/90 transition-colors uppercase tracking-wider flex items-center justify-center gap-2 group active:scale-[0.98] duration-200" type="submit">
+                        Log In
+                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+<nav id="dashNav" style="display: none;" class="fixed top-0 left-0 w-full z-50 flex items-center justify-between py-4 px-4 md:py-6 md:px-12 bg-black/40 backdrop-blur-md border-b border-white/10">
+        <div class="flex items-center">
+            <!-- Branding Removed -->
+        </div>
+        <div class="flex items-center pointer-events-auto">
+            <a href="#" id="logoutBtn" class="text-white/80 text-[11px] md:text-sm font-medium hover:text-white transition-colors duration-200 font-body-lg flex items-center gap-1 md:gap-2 bg-white/5 px-4 py-2 rounded border border-white/20 hover:bg-white/10 uppercase tracking-wider">
+                <span class="material-symbols-outlined" style="font-size: 16px;">logout</span>
+                Logout
+            </a>
+        </div>
+    </nav>
+
+<main id="dashboardContainer" style="display: none;" class="flex-grow flex flex-col items-center justify-start px-6 pt-32 pb-24 z-10 relative w-full container mx-auto">
+        
+        <!-- Welcome Banner -->
+        <div class="w-full max-w-4xl mb-12 text-center md:text-left">
+            <span class="text-yellow-600 font-body-lg uppercase tracking-[0.2em] text-sm mb-2 block">Participant Portal</span>
+            <h1 class="font-display-lg text-4xl md:text-5xl lg:text-6xl text-white mb-2"><span id="dashTeamName">Welcome, Team Placeholder</span></h1>
+            <p class="font-body-lg text-gray-400 text-lg md:text-xl">Your debate assignments and tournament brackets have been finalized.</p>
+        </div>
+
+        <!-- Topic Display Card -->
+        <div class="w-full max-w-4xl relative group">
+            <!-- Animated Gradient Border Behind Card -->
+            <div class="absolute -inset-1 bg-gradient-to-r from-zinc-700 via-yellow-600 to-zinc-700 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 animate-border-flow"></div>
+            
+            <div class="relative w-full bg-[#0a0a0a] border border-white/10 rounded-xl p-8 md:p-12 shadow-2xl flex flex-col md:flex-row gap-8 items-center justify-between">
+                
+                <!-- Topic Details -->
+                <div class="flex-1">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="material-symbols-outlined text-yellow-600 border border-yellow-600/30 bg-yellow-600/10 p-2 rounded-lg" style="font-size: 28px;">gavel</span>
+                        <h2 class="font-headline-lg text-2xl uppercase tracking-widest text-white/50">Round 1 Topic</h2>
+                    </div>
+                    
+                    <h3 class="font-display-lg text-3xl md:text-4xl text-white leading-tight mb-8"><span id="dashTopic">"This house believes that the rapid integration of artificial intelligence poses a threat to human autonomy rather than fostering liberation."</span></h3>
+                    
+                    <div class="grid grid-cols-2 gap-4 max-w-md">
+                        <div class="bg-[#111] border border-white/10 rounded p-4">
+                            <span class="block text-xs uppercase tracking-widest text-gray-500 mb-1">Your Stance</span>
+                            <span class="block font-headline-lg text-xl text-red-400"><span id="dashStance">Opposition (Negative)</span></span>
+                        </div>
+                        <div class="bg-[#111] border border-white/10 rounded p-4">
+                            <span class="block text-xs uppercase tracking-widest text-gray-500 mb-1">Classroom</span>
+                            <span class="block font-headline-lg text-xl text-white"><span id="dashClassroom">Team Automata</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Clock / Countdown Details -->
+                <div class="w-full md:w-64 bg-black/50 border border-white/5 rounded-xl p-6 flex flex-col items-center justify-center text-center">
+                                        <div class="flex flex-col items-center w-full justify-center gap-4 py-4">
+                        <div class="text-center">
+                            <span class="block text-xs uppercase tracking-widest text-gray-500 mb-1">Date</span>
+                            <div class="font-display-lg text-2xl text-white tracking-widest"><span id="dashDate">TBD</span></div>
+                        </div>
+                        <div class="h-px w-2/3 bg-white/10 my-1"></div>
+                        <div class="text-center">
+                            <span class="block text-xs uppercase tracking-widest text-gray-500 mb-1">Time</span>
+                            <div class="font-display-lg text-3xl text-yellow-500 tracking-widest"><span id="dashTime">TBD</span></div>
+                        </div>
+                    </div>               </div>
+
+            </div>
+        </div>
+        
+    </main>
+
+
+    <!-- API Integration Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginForm = document.getElementById('loginForm');
+            const loginContainer = document.getElementById('loginContainer');
+            const loginNav = document.getElementById('loginNav');
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const loginError = document.getElementById('loginError');
+            
+            const dashboardContainer = document.getElementById('dashboardContainer');
+            const dashNav = document.getElementById('dashNav');
+            const logoutBtn = document.getElementById('logoutBtn');
+            
+            const dashTeamName = document.getElementById('dashTeamName');
+            const dashTopic = document.getElementById('dashTopic');
+            const dashStance = document.getElementById('dashStance');
+            const dashDate = document.getElementById('dashDate');
+            const dashTime = document.getElementById('dashTime');
+            const dashClassroom = document.getElementById('dashClassroom');
+
+            if (loginForm) {
+                loginForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    
+                    const username = usernameInput.value.trim();
+                    const password = passwordInput.value;
+
+                    loginError.textContent = 'Authenticating...';
+                    loginError.className = 'text-yellow-500 text-center mb-4';
+
+                    try {
+                        const response = await fetch('http://127.0.0.1:8000/api/login/', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ username, password })
+                        });
+                        const data = await response.json();
+
+                        if (data.status === 'success') {
+                            // Populate Dashboard
+                            dashTeamName.textContent = `Welcome, ${data.data.team_name}`;
+                            dashTopic.textContent = `"${data.data.debate_topic}"`;
+                            dashDate.textContent = data.data.debate_date;
+                            dashTime.textContent = data.data.debate_time;
+                            dashClassroom.textContent = data.data.classroom;
+                            
+                            // Stance coloration
+                            dashStance.textContent = data.data.stance;
+                            const ls = data.data.stance.toLowerCase();
+                            if (ls.includes('for') || ls.includes('prop') || ls.includes('affirmative')) {
+                                dashStance.parentElement.className = 'block font-headline-lg text-xl text-green-400';
+                            } else if (ls.includes('against') || ls.includes('oppo') || ls.includes('negative')) {
+                                dashStance.parentElement.className = 'block font-headline-lg text-xl text-red-500';
+                            } else {
+                                dashStance.parentElement.className = 'block font-headline-lg text-xl text-white';
+                            }
+
+                            // View Switch
+                            loginNav.style.display = 'none';
+                            loginContainer.style.display = 'none';
+                            
+                            dashNav.style.display = 'flex';
+                            dashboardContainer.style.display = 'flex';
+                        } else {
+                            loginError.textContent = data.message || "Invalid Login ID or Password.";
+                            loginError.className = 'text-red-500 text-center mb-4';
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        loginError.textContent = "Network error. Make sure the API is running at 127.0.0.1:8000.";
+                        loginError.className = 'text-red-500 text-center mb-4';
+                    }
+                });
+            }
+
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    loginForm.reset();
+                    loginError.textContent = '';
+                    
+                    dashNav.style.display = 'none';
+                    dashboardContainer.style.display = 'none';
+                    
+                    loginNav.style.display = 'flex';
+                    loginContainer.style.display = 'flex';
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
