@@ -15,8 +15,8 @@ class TeamRegistration(models.Model):
     
     experience = models.TextField(blank=True, null=True)
     
-    # Upload screenshots to 'screenshots/' directory inside your MEDIA_ROOT
-    payment_screenshot = models.ImageField(upload_to='screenshots/')
+    # Cloudinary URL for the payment screenshot (uploaded at registration time)
+    payment_screenshot = models.URLField(max_length=500, blank=True, null=True)
     
     # Admin approval flag
     is_approved = models.BooleanField(default=False)
@@ -71,11 +71,16 @@ class TeamRegistration(models.Model):
         super().save(*args, **kwargs)
 
         if should_sync_excel:
-            import os, openpyxl
-            from openpyxl import Workbook
-            from django.conf import settings
+            try:
+                import os, openpyxl
+                from openpyxl import Workbook
+                from django.conf import settings
+            except ImportError:
+                print("WARNING: openpyxl is not installed. Excel sync skipped. Run: pip install openpyxl")
+                return
+
             excel_path = os.path.join(settings.BASE_DIR, 'infacto_participants.xlsx')
-            
+
             try:
                 if os.path.exists(excel_path):
                     wb = openpyxl.load_workbook(excel_path)
@@ -90,15 +95,15 @@ class TeamRegistration(models.Model):
                         'Merch Opt-In', 'Primary Size', 'Teammate Size',
                         'Debate Topic', 'Stance', 'Date', 'Time', 'Classroom'
                     ])
-                    
+
                 team_row = None
                 for row in range(2, ws.max_row + 1):
                     if ws.cell(row=row, column=1).value == self.team_name:
                         team_row = row
                         break
-                        
+
                 merch_status = "Yes" if self.add_merch else "No"
-                
+
                 if newly_approved and not team_row:
                     ws.append([
                         self.team_name, self.primary_name, self.primary_email, self.primary_mobile,
@@ -108,7 +113,6 @@ class TeamRegistration(models.Model):
                         self.debate_topic, self.stance, self.debate_date, self.debate_time, self.classroom
                     ])
                 elif team_row:
-                    # Update Debate parameters (shifted right by +3 index columns)
                     ws.cell(row=team_row, column=12, value=merch_status)
                     ws.cell(row=team_row, column=13, value=self.primary_tshirt_size or "-")
                     ws.cell(row=team_row, column=14, value=self.teammate_tshirt_size or "-")
@@ -117,7 +121,8 @@ class TeamRegistration(models.Model):
                     ws.cell(row=team_row, column=17, value=self.debate_date)
                     ws.cell(row=team_row, column=18, value=self.debate_time)
                     ws.cell(row=team_row, column=19, value=self.classroom)
-                    
+
                 wb.save(excel_path)
             except Exception as e:
                 print(f"Skipping Excel Background Sync: File is likely locked by another program. Error: {str(e)}")
+

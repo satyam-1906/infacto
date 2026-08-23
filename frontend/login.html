@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Infacto - Login</title>
+    <link rel="icon" href="data:,">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -34,7 +35,7 @@
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
-    
+
         /* Premium Glowing Border Animation */
         @keyframes border-flow {
             0% { background-position: 0% 50%; }
@@ -48,7 +49,7 @@
     </style>
 </head>
 <body class="bg-black text-white min-h-screen flex flex-col font-body-md antialiased">
-    
+
     <!-- Generic Transparent Navigation Bar -->
     <nav id="loginNav" class="fixed top-0 left-0 w-full z-50 flex items-center justify-end py-4 px-4 md:py-6 md:px-12 bg-transparent pointer-events-none">
         <div class="flex items-center pointer-events-auto drop-shadow-md">
@@ -59,14 +60,14 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
+    <!-- Main Content (Login Form) -->
     <main id="loginContainer" class="flex-grow flex items-center justify-center px-6 py-24 z-10 relative">
         <div class="w-full max-w-md">
             <div class="text-center mb-12 flex flex-col justify-center items-center">
                 <h1 class="font-display-lg text-5xl md:text-6xl text-white mb-6">Login</h1>
                 <p class="font-headline-sm text-lg md:text-xl text-white/80 text-center mb-0 max-w-sm">Experience the thrill of Oxford Style debate at IIIT Nagpur.</p>
             </div>
-            
+
             <div id="loginError" class="text-red-500 text-center mb-4 transition-all"></div>
             <form class="space-y-8" id="loginForm">
                 <div class="border border-white/20 rounded-xl p-8 space-y-8 bg-white/5 shadow-2xl backdrop-blur-sm">
@@ -74,24 +75,25 @@
                         <label class="block font-headline-sm text-xl text-white" for="username">ID</label>
                         <input class="w-full bg-transparent border-0 border-b-2 border-white/20 text-white font-body-lg text-lg py-3 px-0 focus:ring-0 focus:border-white transition-colors placeholder-white/30 rounded-none outline-none" id="username" placeholder="Enter your ID" type="text" required="">
                     </div>
-                    
+
                     <div class="space-y-2 mt-8">
                         <label class="block font-headline-sm text-xl text-white" for="password">Password</label>
                         <input class="w-full bg-transparent border-0 border-b-2 border-white/20 text-white font-body-lg text-lg py-3 px-0 focus:ring-0 focus:border-white transition-colors placeholder-white/30 rounded-none outline-none" id="password" placeholder="Enter your Password" type="password" required="">
                     </div>
                 </div>
-                
+
                 <div class="pt-8">
                     <button class="w-full bg-white text-black font-headline-sm text-lg py-4 px-8 rounded hover:bg-white/90 transition-colors uppercase tracking-wider flex items-center justify-center gap-2 group active:scale-[0.98] duration-200" type="submit">
                         Log In
-                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
                     </button>
                 </div>
             </form>
         </div>
     </main>
 
-<nav id="dashNav" style="display: none;" class="fixed top-0 left-0 w-full z-50 flex items-center justify-between py-4 px-4 md:py-6 md:px-12 bg-black/40 backdrop-blur-md border-b border-white/10">
+    <!-- Dashboard Navigation (shown after login) -->
+    <nav id="dashNav" style="display: none;" class="fixed top-0 left-0 w-full z-50 flex items-center justify-between py-4 px-4 md:py-6 md:px-12 bg-black/40 backdrop-blur-md border-b border-white/10">
         <div class="flex items-center">
             <!-- Branding Removed -->
         </div>
@@ -103,8 +105,9 @@
         </div>
     </nav>
 
-<main id="dashboardContainer" style="display: none;" class="flex-grow flex flex-col items-center justify-start px-6 pt-32 pb-24 z-10 relative w-full container mx-auto">
-        
+    <!-- Participant Dashboard -->
+    <main id="dashboardContainer" style="display: none;" class="flex-grow flex flex-col items-center justify-start px-6 pt-32 pb-24 z-10 relative w-full container mx-auto">
+
         <!-- Welcome Banner -->
         <div class="w-full max-w-4xl mb-12 text-center md:text-left">
             <span class="text-yellow-600 font-body-lg uppercase tracking-[0.2em] text-sm mb-2 block">Participant Portal</span>
@@ -116,18 +119,18 @@
         <div class="w-full max-w-4xl relative group">
             <!-- Animated Gradient Border Behind Card -->
             <div class="absolute -inset-1 bg-gradient-to-r from-zinc-700 via-yellow-600 to-zinc-700 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 animate-border-flow"></div>
-            
+
             <div class="relative w-full bg-[#0a0a0a] border border-white/10 rounded-xl p-8 md:p-12 shadow-2xl flex flex-col md:flex-row gap-8 items-center justify-between">
-                
+
                 <!-- Topic Details -->
                 <div class="flex-1">
                     <div class="flex items-center gap-3 mb-6">
                         <span class="material-symbols-outlined text-yellow-600 border border-yellow-600/30 bg-yellow-600/10 p-2 rounded-lg" style="font-size: 28px;">gavel</span>
                         <h2 class="font-headline-lg text-2xl uppercase tracking-widest text-white/50">Round 1 Topic</h2>
                     </div>
-                    
+
                     <h3 class="font-display-lg text-3xl md:text-4xl text-white leading-tight mb-8"><span id="dashTopic">"This house believes that the rapid integration of artificial intelligence poses a threat to human autonomy rather than fostering liberation."</span></h3>
-                    
+
                     <div class="grid grid-cols-2 gap-4 max-w-md">
                         <div class="bg-[#111] border border-white/10 rounded p-4">
                             <span class="block text-xs uppercase tracking-widest text-gray-500 mb-1">Your Stance</span>
@@ -140,9 +143,9 @@
                     </div>
                 </div>
 
-                <!-- Clock / Countdown Details -->
+                <!-- Date / Time Details -->
                 <div class="w-full md:w-64 bg-black/50 border border-white/5 rounded-xl p-6 flex flex-col items-center justify-center text-center">
-                                        <div class="flex flex-col items-center w-full justify-center gap-4 py-4">
+                    <div class="flex flex-col items-center w-full justify-center gap-4 py-4">
                         <div class="text-center">
                             <span class="block text-xs uppercase tracking-widest text-gray-500 mb-1">Date</span>
                             <div class="font-display-lg text-2xl text-white tracking-widest"><span id="dashDate">TBD</span></div>
@@ -152,13 +155,95 @@
                             <span class="block text-xs uppercase tracking-widest text-gray-500 mb-1">Time</span>
                             <div class="font-display-lg text-3xl text-yellow-500 tracking-widest"><span id="dashTime">TBD</span></div>
                         </div>
-                    </div>               </div>
+                    </div>
+                </div>
 
             </div>
         </div>
-        
+
     </main>
 
+    <!-- Admin Dashboard Container -->
+    <main id="adminDashboardContainer" style="display: none;" class="flex-grow flex flex-col items-center justify-start px-6 pt-32 pb-24 z-10 relative w-full container mx-auto">
+        <!-- Welcome / Branding -->
+        <div class="w-full max-w-6xl mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <span class="text-yellow-600 font-body-lg uppercase tracking-[0.2em] text-sm mb-2 block">Executive Admin Panel</span>
+                <h1 class="font-display-lg text-4xl md:text-5xl text-white mb-2">Team Registrations</h1>
+                <p class="font-body-lg text-gray-400 text-sm md:text-base">Review payment screenshots, approve teams, and generate participant credentials.</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <button id="refreshAdminBtn" class="bg-white/5 border border-white/25 text-white font-body-lg text-sm px-4 py-2.5 rounded hover:bg-white/10 transition flex items-center gap-2">
+                    <span class="material-symbols-outlined text-sm">refresh</span> Refresh Data
+                </button>
+            </div>
+        </div>
+
+        <!-- Metric Stat Cards -->
+        <div class="w-full max-w-6xl grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div class="bg-[#0a0a0a] border border-white/10 rounded-xl p-5 shadow-xl">
+                <span class="block text-xs uppercase tracking-widest text-gray-500 mb-1">Total Teams</span>
+                <span id="statTotal" class="block font-headline-lg text-3xl text-white font-bold">0</span>
+            </div>
+            <div class="bg-[#0a0a0a] border border-white/10 rounded-xl p-5 shadow-xl">
+                <span class="block text-xs uppercase tracking-widest text-gray-500 mb-1">Approved</span>
+                <span id="statApproved" class="block font-headline-lg text-3xl text-green-400 font-bold">0</span>
+            </div>
+            <div class="bg-[#0a0a0a] border border-white/10 rounded-xl p-5 shadow-xl">
+                <span class="block text-xs uppercase tracking-widest text-gray-500 mb-1">Pending</span>
+                <span id="statPending" class="block font-headline-lg text-3xl text-red-400 font-bold">0</span>
+            </div>
+            <div class="bg-[#0a0a0a] border border-white/10 rounded-xl p-5 shadow-xl">
+                <span class="block text-xs uppercase tracking-widest text-gray-500 mb-1">Merch Orders</span>
+                <span id="statMerch" class="block font-headline-lg text-3xl text-yellow-500 font-bold">0</span>
+            </div>
+        </div>
+
+        <!-- Search and Filters -->
+        <div class="w-full max-w-6xl mb-6">
+            <div class="relative">
+                <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <span class="material-symbols-outlined text-gray-400">search</span>
+                </span>
+                <input id="adminSearchInput" type="text" placeholder="Search by team name, participant, or college..." class="w-full bg-[#0a0a0a] border border-white/10 text-white font-body-lg py-3.5 pl-10 pr-4 rounded-xl focus:ring-0 focus:border-white transition-colors outline-none placeholder-white/30">
+            </div>
+        </div>
+
+        <!-- Registrations Table Card -->
+        <div class="w-full max-w-6xl bg-[#0a0a0a] border border-white/10 rounded-xl overflow-hidden shadow-2xl">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-white/10 bg-white/5 font-headline-sm text-xs tracking-wider text-white/60 uppercase">
+                            <th class="py-4 px-6">Team Info</th>
+                            <th class="py-4 px-6">Participants</th>
+                            <th class="py-4 px-6">Institution</th>
+                            <th class="py-4 px-6">Screenshot</th>
+                            <th class="py-4 px-6">Merch Size</th>
+                            <th class="py-4 px-6 text-center">Status</th>
+                            <th class="py-4 px-6 text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="registrationsTableBody" class="divide-y divide-white/5 font-body-lg text-sm text-gray-300">
+                        <tr>
+                            <td colspan="7" class="py-12 text-center text-gray-500">Loading registrations...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal for Payment Screenshot Preview -->
+    <div id="screenshotModal" class="fixed inset-0 z-[1000] bg-black/80 hidden items-center justify-center p-4">
+        <div class="relative bg-[#0a0a0a] border border-white/15 rounded-xl max-w-2xl w-full p-4 flex flex-col items-center">
+            <button onclick="document.getElementById('screenshotModal').classList.replace('flex', 'hidden')" class="absolute top-4 right-4 text-white/70 hover:text-white bg-white/5 p-2 rounded-full border border-white/10">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <h3 class="font-headline-lg text-xl text-white mb-4">Payment Verification</h3>
+            <img id="modalImage" src="" class="max-h-[70vh] max-w-full rounded object-contain border border-white/10">
+        </div>
+    </div>
 
     <!-- API Integration Logic -->
     <script>
@@ -169,11 +254,11 @@
             const usernameInput = document.getElementById('username');
             const passwordInput = document.getElementById('password');
             const loginError = document.getElementById('loginError');
-            
+
             const dashboardContainer = document.getElementById('dashboardContainer');
             const dashNav = document.getElementById('dashNav');
             const logoutBtn = document.getElementById('logoutBtn');
-            
+
             const dashTeamName = document.getElementById('dashTeamName');
             const dashTopic = document.getElementById('dashTopic');
             const dashStance = document.getElementById('dashStance');
@@ -181,10 +266,27 @@
             const dashTime = document.getElementById('dashTime');
             const dashClassroom = document.getElementById('dashClassroom');
 
+            // Admin Dashboard Elements
+            const adminDashboardContainer = document.getElementById('adminDashboardContainer');
+            const registrationsTableBody = document.getElementById('registrationsTableBody');
+            const adminSearchInput = document.getElementById('adminSearchInput');
+            const refreshAdminBtn = document.getElementById('refreshAdminBtn');
+            const screenshotModal = document.getElementById('screenshotModal');
+            const modalImage = document.getElementById('modalImage');
+
+            const statTotal = document.getElementById('statTotal');
+            const statApproved = document.getElementById('statApproved');
+            const statPending = document.getElementById('statPending');
+            const statMerch = document.getElementById('statMerch');
+
+            let allRegistrations = [];
+            let adminToken = ''; // stored after admin login
+
+            // ── Login Form Submit ──────────────────────────────────────
             if (loginForm) {
                 loginForm.addEventListener('submit', async (e) => {
                     e.preventDefault();
-                    
+
                     const username = usernameInput.value.trim();
                     const password = passwordInput.value;
 
@@ -192,59 +294,220 @@
                     loginError.className = 'text-yellow-500 text-center mb-4';
 
                     try {
-                        const response = await fetch('http://127.0.0.1:8000/api/login/', {
+                        const response = await fetch('http://127.0.0.1:8001/api/login/', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ username, password })
+                            body: JSON.stringify({ username, password }),
+                            credentials: 'include'
                         });
                         const data = await response.json();
 
                         if (data.status === 'success') {
-                            // Populate Dashboard
-                            dashTeamName.textContent = `Welcome, ${data.data.team_name}`;
-                            dashTopic.textContent = `"${data.data.debate_topic}"`;
-                            dashDate.textContent = data.data.debate_date;
-                            dashTime.textContent = data.data.debate_time;
-                            dashClassroom.textContent = data.data.classroom;
-                            
-                            // Stance coloration
-                            dashStance.textContent = data.data.stance;
-                            const ls = data.data.stance.toLowerCase();
-                            if (ls.includes('for') || ls.includes('prop') || ls.includes('affirmative')) {
-                                dashStance.parentElement.className = 'block font-headline-lg text-xl text-green-400';
-                            } else if (ls.includes('against') || ls.includes('oppo') || ls.includes('negative')) {
-                                dashStance.parentElement.className = 'block font-headline-lg text-xl text-red-500';
-                            } else {
-                                dashStance.parentElement.className = 'block font-headline-lg text-xl text-white';
-                            }
-
-                            // View Switch
+                            // Hide login view
                             loginNav.style.display = 'none';
                             loginContainer.style.display = 'none';
-                            
+
+                            // Show shared nav
                             dashNav.style.display = 'flex';
-                            dashboardContainer.style.display = 'flex';
+
+                            if (data.is_admin) {
+                                adminToken = data.admin_token || '';
+                                adminDashboardContainer.style.display = 'flex';
+                                fetchRegistrations();
+                            } else {
+                                // Populate Participant Dashboard
+                                dashTeamName.textContent = `Welcome, ${data.data.team_name}`;
+                                dashTopic.textContent = `"${data.data.debate_topic}"`;
+                                dashDate.textContent = data.data.debate_date;
+                                dashTime.textContent = data.data.debate_time;
+                                dashClassroom.textContent = data.data.classroom;
+
+                                // Stance coloration
+                                dashStance.textContent = data.data.stance;
+                                const ls = data.data.stance.toLowerCase();
+                                if (ls.includes('for') || ls.includes('prop') || ls.includes('affirmative')) {
+                                    dashStance.parentElement.className = 'block font-headline-lg text-xl text-green-400';
+                                } else if (ls.includes('against') || ls.includes('oppo') || ls.includes('negative')) {
+                                    dashStance.parentElement.className = 'block font-headline-lg text-xl text-red-500';
+                                } else {
+                                    dashStance.parentElement.className = 'block font-headline-lg text-xl text-white';
+                                }
+
+                                dashboardContainer.style.display = 'flex';
+                            }
                         } else {
-                            loginError.textContent = data.message || "Invalid Login ID or Password.";
+                            loginError.textContent = data.message || 'Invalid Login ID or Password.';
                             loginError.className = 'text-red-500 text-center mb-4';
                         }
                     } catch (err) {
                         console.error(err);
-                        loginError.textContent = "Network error. Make sure the API is running at 127.0.0.1:8000.";
+                        loginError.textContent = 'Network error. Make sure the API is running at 127.0.0.1:8001.';
                         loginError.className = 'text-red-500 text-center mb-4';
                     }
                 });
             }
 
+            // ── Fetch Registrations for Admin ─────────────────────────
+            async function fetchRegistrations() {
+                registrationsTableBody.innerHTML = '<tr><td colspan="7" class="py-12 text-center text-gray-500">Loading registrations...</td></tr>';
+                try {
+                    const response = await fetch('http://127.0.0.1:8001/api/admin/registrations/', {
+                        credentials: 'include',
+                        headers: { 'X-Admin-Token': adminToken }
+                    });
+                    if (!response.ok) throw new Error('Unauthorized or server error');
+                    const data = await response.json();
+                    if (data.status === 'success') {
+                        allRegistrations = data.data;
+                        renderRegistrations();
+                    } else {
+                        throw new Error(data.message);
+                    }
+                } catch (err) {
+                    console.error(err);
+                    registrationsTableBody.innerHTML = `<tr><td colspan="7" class="py-12 text-center text-red-500">Failed to load data: ${err.message}</td></tr>`;
+                }
+            }
+
+            // ── Render Registrations Table ────────────────────────────
+            function renderRegistrations(filterText = '') {
+                const query = filterText.toLowerCase().trim();
+                const filtered = allRegistrations.filter(r => {
+                    return r.team_name.toLowerCase().includes(query) ||
+                           r.primary_name.toLowerCase().includes(query) ||
+                           (r.teammate_name && r.teammate_name.toLowerCase().includes(query)) ||
+                           r.institution.toLowerCase().includes(query);
+                });
+
+                // Update Stats
+                const total = allRegistrations.length;
+                const approved = allRegistrations.filter(r => r.is_approved).length;
+                const pending = total - approved;
+                const merch = allRegistrations.filter(r => r.add_merch).length;
+
+                statTotal.textContent = total;
+                statApproved.textContent = approved;
+                statPending.textContent = pending;
+                statMerch.textContent = merch;
+
+                if (filtered.length === 0) {
+                    registrationsTableBody.innerHTML = '<tr><td colspan="7" class="py-12 text-center text-gray-500">No matching registrations found.</td></tr>';
+                    return;
+                }
+
+                registrationsTableBody.innerHTML = '';
+                filtered.forEach(r => {
+                    const tr = document.createElement('tr');
+                    tr.className = 'hover:bg-white/5 border-b border-white/5 transition-colors duration-150';
+
+                    // Screenshot Column
+                    let screenshotBtn = '<span class="text-gray-500 italic text-xs">No file</span>';
+                    if (r.payment_screenshot_url) {
+                        // payment_screenshot_url is a full Cloudinary URL for new records
+                        // (e.g. https://res.cloudinary.com/...) — use it directly.
+                        // For legacy records with a relative path, fall back to local server.
+                        const proofUrl = r.payment_screenshot_url.startsWith('http')
+                            ? r.payment_screenshot_url
+                            : `http://127.0.0.1:8001${r.payment_screenshot_url}`;
+                        screenshotBtn = `<button class="text-yellow-600 hover:text-yellow-500 underline font-body-lg text-sm view-screenshot-btn" data-url="${proofUrl}">View Proof</button>`;
+                    }
+
+                    // Merch info
+                    let merchInfo = '<span class="text-gray-500">—</span>';
+                    if (r.add_merch) {
+                        merchInfo = `<span class="bg-yellow-600/10 text-yellow-500 border border-yellow-600/20 px-2 py-0.5 rounded text-xs font-semibold uppercase">Yes (${r.primary_tshirt_size}/${r.teammate_tshirt_size || 'None'})</span>`;
+                    }
+
+                    // Status Badge
+                    const statusBadge = r.is_approved
+                        ? `<span class="inline-block bg-green-500/10 text-green-400 border border-green-500/20 px-3 py-1 rounded-full text-xs font-bold uppercase">Approved</span>`
+                        : `<span class="inline-block bg-red-500/10 text-red-400 border border-red-500/20 px-3 py-1 rounded-full text-xs font-bold uppercase">Pending</span>`;
+
+                    // Actions Button
+                    const actionBtn = r.is_approved
+                        ? `<button class="bg-red-500/10 text-red-400 border border-red-500/25 px-3 py-1.5 rounded hover:bg-red-500/20 transition text-xs uppercase font-semibold toggle-approval-btn" data-id="${r.id}">Revoke</button>`
+                        : `<button class="bg-green-500/10 text-green-400 border border-green-500/25 px-3 py-1.5 rounded hover:bg-green-500/20 transition text-xs uppercase font-semibold toggle-approval-btn" data-id="${r.id}">Approve</button>`;
+
+                    tr.innerHTML = `
+                        <td class="py-4 px-6">
+                            <div class="font-bold text-white">${r.team_name}</div>
+                            <div class="text-xs text-gray-500">Cred ID: ${r.generated_username || 'Pending'}</div>
+                        </td>
+                        <td class="py-4 px-6 text-xs">
+                            <div class="text-white">1. ${r.primary_name} (${r.primary_mobile})</div>
+                            <div class="text-gray-400">2. ${r.teammate_name || 'N/A'} (${r.teammate_mobile || 'N/A'})</div>
+                        </td>
+                        <td class="py-4 px-6 text-xs text-gray-400 max-w-[150px] truncate" title="${r.institution}">${r.institution}</td>
+                        <td class="py-4 px-6">${screenshotBtn}</td>
+                        <td class="py-4 px-6">${merchInfo}</td>
+                        <td class="py-4 px-6 text-center">${statusBadge}</td>
+                        <td class="py-4 px-6 text-right">${actionBtn}</td>
+                    `;
+                    registrationsTableBody.appendChild(tr);
+                });
+
+                // Attach screenshot modal listeners
+                document.querySelectorAll('.view-screenshot-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        modalImage.src = btn.getAttribute('data-url');
+                        screenshotModal.classList.replace('hidden', 'flex');
+                    });
+                });
+
+                // Attach approval toggle listeners
+                document.querySelectorAll('.toggle-approval-btn').forEach(btn => {
+                    btn.addEventListener('click', async () => {
+                        const id = btn.getAttribute('data-id');
+                        btn.disabled = true;
+                        btn.textContent = '...';
+                        try {
+                            const response = await fetch('http://127.0.0.1:8001/api/admin/toggle-approval/', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-Admin-Token': adminToken
+                                },
+                                body: JSON.stringify({ id: parseInt(id) }),
+                                credentials: 'include'
+                            });
+                            const result = await response.json();
+                            if (result.status === 'success') {
+                                const target = allRegistrations.find(x => x.id === parseInt(id));
+                                if (target) target.is_approved = result.is_approved;
+                                renderRegistrations(adminSearchInput.value);
+                            }
+                        } catch (err) {
+                            console.error(err);
+                            alert('Failed to toggle team approval status.');
+                            btn.disabled = false;
+                        }
+                    });
+                });
+            }
+
+            // ── Search Filter ─────────────────────────────────────────
+            if (adminSearchInput) {
+                adminSearchInput.addEventListener('input', function() {
+                    renderRegistrations(this.value);
+                });
+            }
+
+            // ── Refresh Button ────────────────────────────────────────
+            if (refreshAdminBtn) {
+                refreshAdminBtn.addEventListener('click', fetchRegistrations);
+            }
+
+            // ── Logout ────────────────────────────────────────────────
             if (logoutBtn) {
                 logoutBtn.addEventListener('click', (e) => {
                     e.preventDefault();
                     loginForm.reset();
                     loginError.textContent = '';
-                    
+
                     dashNav.style.display = 'none';
                     dashboardContainer.style.display = 'none';
-                    
+                    adminDashboardContainer.style.display = 'none';
+
                     loginNav.style.display = 'flex';
                     loginContainer.style.display = 'flex';
                 });

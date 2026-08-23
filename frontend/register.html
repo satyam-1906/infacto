@@ -260,6 +260,14 @@
                 function handleFiles(files) {
                     if (files.length > 0) {
                         const file = files[0];
+                        
+                        // Sync dropped files to file input element so it is sent with FormData
+                        if (fileInput.files !== files) {
+                            const dataTransfer = new DataTransfer();
+                            dataTransfer.items.add(file);
+                            fileInput.files = dataTransfer.files;
+                        }
+
                         fileNameDisplay.textContent = 'Selected: ' + file.name;
                         fileNameDisplay.classList.replace('text-gray-500', 'text-white');
                         const fileUrl = URL.createObjectURL(file);
@@ -294,7 +302,7 @@
 
                     const formData = new FormData(form);
 
-                    fetch('http://127.0.0.1:8000/api/register/', {
+                    fetch('http://127.0.0.1:8001/api/register/', {
                         method: 'POST',
                         body: formData,
                     })

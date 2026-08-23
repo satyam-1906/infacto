@@ -9,6 +9,6 @@ urlpatterns = [
     path('api/', include('registrations.urls')), 
 ]
 
-# This allows Django to display your uploaded screenshots in the admin panel
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# Always serve media files locally (payment screenshots visible in admin panel)
+# In production, your web server (nginx/apache) should handle /media/ instead
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -12,26 +12,31 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load environment variables from .env file located at project root
+load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-0%9huv(+=+_3hygoa+#h1)#^ct#($*f(cr9*y1w0@)88p*iq$_'
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-fallback-dev-key-change-in-production')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False').lower() in ('true', '1', 't')
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',                          # Must be BEFORE django.contrib.admin
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,6 +50,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'main_backend.middleware.CloudinaryCSPMiddleware',  # Allow Cloudinary images in admin
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -119,34 +125,150 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
-# Email
-# https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
-
-MAILERS = {
-    'default': {
-        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
-    },
-}
 # ==========================================
 # CUSTOM INFACTO CONFIGURATIONS
 # ==========================================
 
-import os # (Ensure this is at the top of the file if it causes an error here)
-
-# 1. Configure Media Upload Directories (Crucial for the screenshots)
-# This tells Django to create a "media" folder to store your images locally
+# 1. Configure Media Upload Directories (kept as fallback)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-CORS_ALLOW_ALL_ORIGINS = True
 
-# 2. Configure External SMTP Email Dispatch (Gmail)
-# Currently inactive in admin.py based on your request, but staged for future use
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = 'your_competition_email@gmail.com'  
-# EMAIL_HOST_PASSWORD = 'your_app_password_here'  
-# DEFAULT_FROM_EMAIL = 'Infacto Admin <your_competition_email@gmail.com>'
+# 2. Cloudinary Configuration (primary image storage)
+CLOUDINARY_CLOUD_NAME = os.getenv('CLOUDINARY_CLOUD_NAME', '')
+CLOUDINARY_API_KEY    = os.getenv('CLOUDINARY_API_KEY', '')
+CLOUDINARY_API_SECRET = os.getenv('CLOUDINARY_API_SECRET', '')
+
+# 2. CORS Configuration (loaded from .env)
+CORS_ALLOW_CREDENTIALS = True
+_cors_origins = os.getenv('CORS_ALLOWED_ORIGINS', '')
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+    'http://localhost:5500',
+    'http://127.0.0.1:5500',
+]
+if _cors_origins:
+    for origin in _cors_origins.split(','):
+        cleaned = origin.strip()
+        if cleaned and cleaned not in CORS_ALLOWED_ORIGINS:
+            CORS_ALLOWED_ORIGINS.append(cleaned)
+
+# Allow custom auth header for admin API calls
+from corsheaders.defaults import default_headers
+CORS_ALLOW_HEADERS = list(default_headers) + ['x-admin-token']
+
+# 3. SMTP Email Configuration (loaded from .env)
+_email_host_user = os.getenv('EMAIL_HOST_USER', '')
+_email_host_password = os.getenv('EMAIL_HOST_PASSWORD', '')
+
+if _email_host_user and _email_host_password:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
+    EMAIL_PORT = int(os.getenv('EMAIL_PORT', '587'))
+    EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True').lower() in ('true', '1', 't')
+    EMAIL_HOST_USER = _email_host_user
+    EMAIL_HOST_PASSWORD = _email_host_password
+    DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', f'Infacto Admin <{_email_host_user}>')
+else:
+    # Fallback to console backend when email credentials are not configured
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# 4. Production HTTPS Security Settings (auto-enabled when not in DEBUG mode)
+if not DEBUG:
+    SECURE_SSL_REDIRECT = os.getenv('SECURE_SSL_REDIRECT', 'False').lower() in ('true', '1', 't')
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = int(os.getenv('SECURE_HSTS_SECONDS', '0'))
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+
+
+# ==========================================
+# JAZZMIN ADMIN UI CONFIGURATION
+# ==========================================
+JAZZMIN_SETTINGS = {
+    # Top-left branding
+    "site_title": "Infacto Admin",
+    "site_header": "Infacto 5.0",
+    "site_brand": "Infacto 5.0",
+    "welcome_sign": "Welcome to Infacto 5.0 — Admin Portal",
+    "copyright": "Orator Club, IIITN © 2026",
+
+    # Search across models
+    "search_model": ["registrations.TeamRegistration", "auth.User"],
+
+    # Top navigation links
+    "topmenu_links": [
+        {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
+        {"name": "Registrations", "url": "admin:registrations_teamregistration_changelist"},
+        {"name": "View Site", "url": "/", "new_window": True},
+    ],
+
+    # User menu (top-right)
+    "usermenu_links": [
+        {"name": "Support", "url": "mailto:orator@iiitn.ac.in", "new_window": True, "icon": "fas fa-envelope"},
+    ],
+
+    # Sidebar configuration
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "hide_apps": [],
+    "hide_models": [],
+
+    # Custom icons for sidebar items
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-user",
+        "auth.Group": "fas fa-users",
+        "registrations.TeamRegistration": "fas fa-clipboard-list",
+    },
+    "default_icon_parents": "fas fa-chevron-circle-right",
+    "default_icon_children": "fas fa-circle",
+
+    # UI Tweaks
+    "related_modal_active": True,
+    "custom_css": None,
+    "custom_js": None,
+    "use_google_fonts_cdn": True,
+    "show_ui_builder": False,
+
+    # Change view layout
+    "changeform_format": "horizontal_tabs",
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "navbar_small_text": False,
+    "footer_small_text": False,
+    "body_small_text": False,
+    "brand_small_text": False,
+    "brand_colour": "navbar-dark",
+    "accent": "accent-teal",
+    "navbar": "navbar-dark",
+    "no_navbar_border": True,
+    "navbar_fixed": True,
+    "layout_boxed": False,
+    "footer_fixed": False,
+    "sidebar_fixed": True,
+    "sidebar": "sidebar-dark-teal",
+    "sidebar_nav_small_text": False,
+    "sidebar_disable_expand": False,
+    "sidebar_nav_child_indent": True,
+    "sidebar_nav_compact_style": False,
+    "sidebar_nav_legacy_style": False,
+    "sidebar_nav_flat_style": False,
+    "theme": "darkly",           # Dark Bootswatch theme
+    "dark_mode_theme": "darkly",
+    "button_classes": {
+        "primary": "btn-outline-primary",
+        "secondary": "btn-outline-secondary",
+        "info": "btn-info",
+        "warning": "btn-warning",
+        "danger": "btn-danger",
+        "success": "btn-success",
+    },
+}
