@@ -73,31 +73,20 @@ class TeamRegistration(models.Model):
 
         super().save(*args, **kwargs)
 
-        # Automatically mail credentials if newly approved by spawning a detached subprocess.
-        # This keeps HTTP requests lightning-fast and prevents Gunicorn from killing worker processes.
+        # Automatically mail credentials instantly in the backend if newly approved.
         if newly_approved and plain_password:
-            import subprocess
-            import sys
-            import os
-            from django.conf import settings
-            
-            manage_py_path = os.path.join(settings.BASE_DIR, 'manage.py')
-            teammate_email_arg = self.teammate_email or 'None'
-            
+            from registrations.emails import send_approval_email
             try:
-                subprocess.Popen([
-                    sys.executable,
-                    manage_py_path,
-                    'send_approval_email',
-                    self.primary_email,
-                    teammate_email_arg,
-                    self.team_name,
-                    self.generated_username,
-                    plain_password
-                ], close_fds=True)
-                print(f"[Subprocess] Spawned background email sender process for {self.primary_email}.")
+                success = send_approval_email(
+                    to_email=self.primary_email,
+                    teammate_email=self.teammate_email,
+                    team_name=self.team_name,
+                    username=self.generated_username,
+                    password=plain_password
+                )
+                print(f"[Email] Instantly sent email to {self.primary_email}. Success: {success}")
             except Exception as e:
-                print(f"[Subprocess] Failed to spawn email process: {e}")
+                print(f"[Email] Failed to send email instantly: {e}")
 
         if should_sync_excel:
             try:
