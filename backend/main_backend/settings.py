@@ -160,8 +160,9 @@ if _cors_origins:
 from corsheaders.defaults import default_headers
 CORS_ALLOW_HEADERS = list(default_headers) + ['x-admin-token']
 
-# 3. Decoupled Email Service Configuration
-EMAIL_SERVICE_URL = os.getenv('EMAIL_SERVICE_URL', 'https://infacto-1.onrender.com/send-email')
+# 3. Resend Email Configuration
+RESEND_API_KEY = os.getenv('RESEND_API_KEY', '')
+RESEND_FROM_EMAIL = os.getenv('RESEND_FROM_EMAIL', 'Infacto Admin <orator@iiitn.ac.in>')
 
 # 4. Production HTTPS Security Settings (auto-enabled when not in DEBUG mode)
 if not DEBUG:

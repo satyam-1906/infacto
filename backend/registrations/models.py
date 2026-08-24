@@ -75,39 +75,23 @@ class TeamRegistration(models.Model):
 
         super().save(*args, **kwargs)
 
-        # Fire-and-forget: send email via decoupled microservice in a background thread.
-        # This avoids blocking the admin approval response on cold-start delays.
+        # Fire-and-forget: send approval email via Resend in a background thread.
         if newly_approved and plain_password:
-            import urllib.request
-            import json
             import threading
-            from django.conf import settings
+            from registrations.emails import send_approval_email
 
-            def _call_email_service():
-                payload = {
-                    "to_email": self.primary_email,
-                    "teammate_email": self.teammate_email or "",
-                    "team_name": self.team_name,
-                    "username": self.generated_username,
-                    "password": plain_password
-                }
-                req = urllib.request.Request(
-                    settings.EMAIL_SERVICE_URL,
-                    data=json.dumps(payload).encode('utf-8'),
-                    headers={'Content-Type': 'application/json'},
-                    method='POST'
+            def _send():
+                send_approval_email(
+                    to_email=self.primary_email,
+                    teammate_email=self.teammate_email,
+                    team_name=self.team_name,
+                    username=self.generated_username,
+                    password=plain_password
                 )
-                try:
-                    # Allow up to 60s for cold-start + SMTP on Render
-                    with urllib.request.urlopen(req, timeout=60) as response:
-                        res_data = json.loads(response.read().decode())
-                        print(f"[Email Service] Success: {res_data}")
-                except Exception as e:
-                    print(f"[Email Service] Failed to call {settings.EMAIL_SERVICE_URL}: {e}")
 
-            t = threading.Thread(target=_call_email_service, daemon=True)
+            t = threading.Thread(target=_send, daemon=True)
             t.start()
-            print(f"[Email Service] Background thread started for {self.primary_email}")
+            print(f"[Resend] Background email thread started for {self.primary_email}")
 
         if should_sync_excel:
             try:
