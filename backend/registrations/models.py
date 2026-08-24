@@ -23,6 +23,7 @@ class TeamRegistration(models.Model):
     
     # Generated credential mapping
     generated_username = models.CharField(max_length=50, blank=True, null=True)
+    generated_password = models.CharField(max_length=50, blank=True, null=True, help_text='Plain-text password set at approval time. Read-only.')
     
     # Merch Fields
     add_merch = models.BooleanField(default=False)
@@ -70,35 +71,43 @@ class TeamRegistration(models.Model):
             plain_password = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
             User.objects.create_user(username=login_id, email=self.primary_email, password=plain_password)
             self.generated_username = login_id
+            self.generated_password = plain_password  # Store plain-text for admin visibility
 
         super().save(*args, **kwargs)
 
-        # Automatically mail credentials instantly via decoupled microservice if newly approved.
+        # Fire-and-forget: send email via decoupled microservice in a background thread.
+        # This avoids blocking the admin approval response on cold-start delays.
         if newly_approved and plain_password:
             import urllib.request
             import json
+            import threading
             from django.conf import settings
-            
-            payload = {
-                "to_email": self.primary_email,
-                "teammate_email": self.teammate_email or "",
-                "team_name": self.team_name,
-                "username": self.generated_username,
-                "password": plain_password
-            }
-            req = urllib.request.Request(
-                settings.EMAIL_SERVICE_URL,
-                data=json.dumps(payload).encode('utf-8'),
-                headers={'Content-Type': 'application/json'},
-                method='POST'
-            )
-            try:
-                # Use a timeout of 5 seconds to avoid blocking Django indefinitely
-                with urllib.request.urlopen(req, timeout=5) as response:
-                    res_data = json.loads(response.read().decode())
-                    print(f"[Email Service] API request successful: {res_data}")
-            except Exception as e:
-                print(f"[Email Service] API request failed to {settings.EMAIL_SERVICE_URL}: {e}")
+
+            def _call_email_service():
+                payload = {
+                    "to_email": self.primary_email,
+                    "teammate_email": self.teammate_email or "",
+                    "team_name": self.team_name,
+                    "username": self.generated_username,
+                    "password": plain_password
+                }
+                req = urllib.request.Request(
+                    settings.EMAIL_SERVICE_URL,
+                    data=json.dumps(payload).encode('utf-8'),
+                    headers={'Content-Type': 'application/json'},
+                    method='POST'
+                )
+                try:
+                    # Allow up to 60s for cold-start + SMTP on Render
+                    with urllib.request.urlopen(req, timeout=60) as response:
+                        res_data = json.loads(response.read().decode())
+                        print(f"[Email Service] Success: {res_data}")
+                except Exception as e:
+                    print(f"[Email Service] Failed to call {settings.EMAIL_SERVICE_URL}: {e}")
+
+            t = threading.Thread(target=_call_email_service, daemon=True)
+            t.start()
+            print(f"[Email Service] Background thread started for {self.primary_email}")
 
         if should_sync_excel:
             try:

@@ -90,6 +90,7 @@ class TeamRegistrationAdmin(admin.ModelAdmin):
     # ── Read-only fields ───────────────────────────────────────────────────────
     readonly_fields = (
         'generated_username',
+        'generated_password',
         'payment_screenshot_preview',
         'primary_email',
         'primary_mobile',
@@ -133,6 +134,7 @@ class TeamRegistrationAdmin(admin.ModelAdmin):
             'fields': (
                 'is_approved',
                 'generated_username',
+                'generated_password',
             ),
             'classes': ('collapse',),
         }),

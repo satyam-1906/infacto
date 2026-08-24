@@ -225,10 +225,10 @@ def send_approval_email(to_email, teammate_email, team_name, username, password)
     # Connect to server and send
     try:
         if EMAIL_USE_TLS:
-            server = smtplib.SMTP(EMAIL_HOST, EMAIL_PORT, timeout=10)
+            server = smtplib.SMTP(EMAIL_HOST, EMAIL_PORT, timeout=30)
             server.starttls()
         else:
-            server = smtplib.SMTP(EMAIL_HOST, EMAIL_PORT, timeout=10)
+            server = smtplib.SMTP(EMAIL_HOST, EMAIL_PORT, timeout=30)
 
         if EMAIL_HOST_USER and EMAIL_HOST_PASSWORD:
             server.login(EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
