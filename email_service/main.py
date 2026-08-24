@@ -10,8 +10,24 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
 
+# ── CORS: restrict to trusted origins only ────────────────────────────────────
+# ALLOWED_ORIGINS env var: comma-separated list of allowed origins.
+# Falls back to the known production + local origins.
+_raw_origins = os.getenv(
+    'ALLOWED_ORIGINS',
+    'https://infacto.onrender.com,https://infacto-six.vercel.app,https://www.infacto.in,'
+    'http://localhost:8000,http://127.0.0.1:8000,http://127.0.0.1:5500'
+)
+ALLOWED_ORIGINS = [o.strip() for o in _raw_origins.split(',') if o.strip()]
+
+CORS(
+    app,
+    origins=ALLOWED_ORIGINS,
+    methods=['POST', 'GET', 'OPTIONS'],
+    allow_headers=['Content-Type', 'Authorization'],
+    supports_credentials=False
+)
 
 # SMTP configurations from environment
 EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
@@ -20,6 +36,7 @@ EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True').lower() in ('true', '1', 't')
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', '')
+
 
 def send_approval_email(to_email, teammate_email, team_name, username, password):
     subject = f"Infacto 5.0 - Registration Approved (Team: {team_name})"
