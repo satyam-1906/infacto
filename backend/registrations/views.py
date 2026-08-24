@@ -207,6 +207,7 @@ def get_all_registrations(request):
                 "classroom": r.classroom,
                 "is_approved": r.is_approved,
                 "generated_username": r.generated_username,
+                "generated_password": r.generated_password or "",
                 "referral_code": r.referral_code or ""
             })
         return JsonResponse({"status": "success", "data": data})

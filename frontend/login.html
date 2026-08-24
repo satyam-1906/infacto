@@ -173,6 +173,9 @@
                 <p class="font-body-lg text-gray-400 text-sm md:text-base">Review payment screenshots, approve teams, and generate participant credentials.</p>
             </div>
             <div class="flex items-center gap-3">
+                <button id="exportCsvBtn" class="bg-yellow-600/10 border border-yellow-600/30 text-yellow-500 font-body-lg text-sm px-4 py-2.5 rounded hover:bg-yellow-600/20 transition flex items-center gap-2">
+                    <span class="material-symbols-outlined text-sm">download</span> Export CSV
+                </button>
                 <button id="refreshAdminBtn" class="bg-white/5 border border-white/25 text-white font-body-lg text-sm px-4 py-2.5 rounded hover:bg-white/10 transition flex items-center gap-2">
                     <span class="material-symbols-outlined text-sm">refresh</span> Refresh Data
                 </button>
@@ -271,6 +274,7 @@
             const registrationsTableBody = document.getElementById('registrationsTableBody');
             const adminSearchInput = document.getElementById('adminSearchInput');
             const refreshAdminBtn = document.getElementById('refreshAdminBtn');
+            const exportCsvBtn = document.getElementById('exportCsvBtn');
             const screenshotModal = document.getElementById('screenshotModal');
             const modalImage = document.getElementById('modalImage');
 
@@ -281,6 +285,40 @@
 
             let allRegistrations = [];
             let adminToken = ''; // stored after admin login
+
+            // ── Export CSV ────────────────────────────────────────────
+            function exportCSV() {
+                if (!allRegistrations.length) { alert('No data to export.'); return; }
+                const headers = [
+                    'ID','Team Name','Primary Name','Primary Email','Primary Mobile',
+                    'Teammate Name','Teammate Email','Teammate Mobile','Institution',
+                    'Experience','Merch','Primary Size','Teammate Size','Referral Code',
+                    'Debate Topic','Stance','Date','Time','Classroom',
+                    'Status','Login ID','Password','Payment URL'
+                ];
+                const rows = allRegistrations.map(r => [
+                    r.id, r.team_name, r.primary_name, r.primary_email, r.primary_mobile,
+                    r.teammate_name || '', r.teammate_email || '', r.teammate_mobile || '',
+                    r.institution, r.experience || '',
+                    r.add_merch ? 'Yes' : 'No', r.primary_tshirt_size || '', r.teammate_tshirt_size || '',
+                    r.referral_code || '', r.debate_topic || '', r.stance || '',
+                    r.debate_date || '', r.debate_time || '', r.classroom || '',
+                    r.is_approved ? 'Approved' : 'Pending',
+                    r.generated_username || '', r.generated_password || '',
+                    r.payment_screenshot_url || ''
+                ].map(v => `"${String(v).replace(/"/g, '""')}"`).join(','));
+
+                const csvContent = [headers.join(','), ...rows].join('\n');
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `infacto_registrations_${new Date().toISOString().slice(0,10)}.csv`;
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+
+            if (exportCsvBtn) exportCsvBtn.addEventListener('click', exportCSV);
 
             // ── Login Form Submit ──────────────────────────────────────
             if (loginForm) {
@@ -440,7 +478,10 @@
                     tr.innerHTML = `
                         <td class="py-4 px-6">
                             <div class="font-bold text-white">${r.team_name}</div>
-                            <div class="text-xs text-gray-500">Cred ID: ${r.generated_username || 'Pending'}</div>
+                            <div class="text-xs text-gray-500">ID: ${r.generated_username || 'Pending'}</div>
+                            ${r.generated_password
+                                ? `<div class="text-xs text-yellow-600 font-mono mt-0.5">🔑 ${r.generated_password}</div>`
+                                : ''}
                         </td>
                         <td class="py-4 px-6 text-xs">
                             <div class="text-white">1. ${r.primary_name} (${r.primary_mobile})</div>
