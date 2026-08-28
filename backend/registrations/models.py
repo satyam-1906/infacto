@@ -18,6 +18,9 @@ class TeamRegistration(models.Model):
     # Cloudinary URL for the payment screenshot (uploaded at registration time)
     payment_screenshot = models.URLField(max_length=500, blank=True, null=True)
     
+    # Transaction ID for payment verification
+    txn_id = models.CharField(max_length=100, blank=True, null=True)
+    
     # Admin approval flag
     is_approved = models.BooleanField(default=False)
     
@@ -117,7 +120,7 @@ class TeamRegistration(models.Model):
                         'Institution', 'Experience', 'Login ID', 'Password',
                         'Merch Opt-In', 'Primary Size', 'Teammate Size',
                         'Debate Topic', 'Stance', 'Date', 'Time', 'Classroom',
-                        'Referral Code'
+                        'Referral Code', 'Transaction ID'
                     ])
 
                 team_row = None
@@ -135,7 +138,7 @@ class TeamRegistration(models.Model):
                         self.institution, self.experience, self.generated_username, plain_password or "Hidden",
                         merch_status, self.primary_tshirt_size or "-", self.teammate_tshirt_size or "-",
                         self.debate_topic, self.stance, self.debate_date, self.debate_time, self.classroom,
-                        self.referral_code or "-"
+                        self.referral_code or "-", self.txn_id or "-"
                     ])
                 elif team_row:
                     ws.cell(row=team_row, column=12, value=merch_status)
@@ -146,6 +149,7 @@ class TeamRegistration(models.Model):
                     ws.cell(row=team_row, column=17, value=self.debate_date)
                     ws.cell(row=team_row, column=18, value=self.debate_time)
                     ws.cell(row=team_row, column=19, value=self.classroom)
+                    ws.cell(row=team_row, column=21, value=self.txn_id or "-")
 
                 wb.save(excel_path)
             except Exception as e:

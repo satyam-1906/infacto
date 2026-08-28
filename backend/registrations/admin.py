@@ -57,6 +57,7 @@ class TeamRegistrationAdmin(admin.ModelAdmin):
         'primary_name',
         'institution',
         'referral_code',
+        'txn_id',
         'payment_thumbnail',
         'add_merch',
         'primary_tshirt_size',
@@ -81,7 +82,7 @@ class TeamRegistrationAdmin(admin.ModelAdmin):
     )
 
     list_filter = ('is_approved', 'add_merch', 'stance', 'institution')
-    search_fields = ('team_name', 'primary_name', 'primary_email', 'generated_username', 'institution', 'referral_code')
+    search_fields = ('team_name', 'primary_name', 'primary_email', 'generated_username', 'institution', 'referral_code', 'txn_id')
     list_per_page = 25
     ordering = ('-id',)
     actions = [approve_teams, revoke_teams, delete_registrations]
@@ -111,6 +112,7 @@ class TeamRegistrationAdmin(admin.ModelAdmin):
         }),
         ('💳 Payment', {
             'fields': (
+                'txn_id',
                 'payment_screenshot',
                 'payment_screenshot_preview',
             )

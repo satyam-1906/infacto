@@ -56,6 +56,7 @@ def submit_registration(request):
             institution = request.POST.get('institution')
             experience = request.POST.get('experience', '')
             referral_code = request.POST.get('referral_code', '')
+            txn_id = request.POST.get('txn_id', '').strip()
             
             # Merch Hooks
             add_merch = request.POST.get('add_merch') == 'on' or request.POST.get('add_merch') == 'true'
@@ -65,8 +66,8 @@ def submit_registration(request):
             # Extract the uploaded screenshot file
             payment_screenshot = request.FILES.get('payment_screenshot')
 
-            if not all([primary_name, primary_email, primary_mobile, team_name, institution, payment_screenshot]):
-                return JsonResponse({"status": "error", "message": "Missing required fields!"}, status=400)
+            if not all([primary_name, primary_email, primary_mobile, team_name, institution, payment_screenshot, txn_id]):
+                return JsonResponse({"status": "error", "message": "Missing required fields! Please provide all requested details, including payment proof and Transaction ID."}, status=400)
 
             if TeamRegistration.objects.filter(team_name__iexact=team_name).exists():
                 return JsonResponse({"status": "error", "message": "A team with this Team Name already exists! Please choose another."}, status=400)
@@ -113,7 +114,8 @@ def submit_registration(request):
                 add_merch=add_merch,
                 primary_tshirt_size=primary_tshirt_size,
                 teammate_tshirt_size=teammate_tshirt_size,
-                referral_code=referral_code
+                referral_code=referral_code,
+                txn_id=txn_id
             )
             
             return JsonResponse({"status": "success", "message": "Registration received!"})
@@ -208,7 +210,8 @@ def get_all_registrations(request):
                 "is_approved": r.is_approved,
                 "generated_username": r.generated_username,
                 "generated_password": r.generated_password or "",
-                "referral_code": r.referral_code or ""
+                "referral_code": r.referral_code or "",
+                "txn_id": r.txn_id or ""
             })
         return JsonResponse({"status": "success", "data": data})
     except Exception as e:
