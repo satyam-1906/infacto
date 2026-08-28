@@ -130,62 +130,18 @@
                 </div>
 
                 
-                <!-- Merchandise Opt-In -->
+                <!-- Merchandise Info and Google Form Link -->
                 <div class="mt-8 pt-6 border-t border-[#222222]">
-                    <div class="flex items-center justify-between bg-[#0f0f0f] p-5 rounded-lg border border-gray-800 hover:border-yellow-600 transition-colors cursor-pointer select-none" id="merchToggleContainer">
-                        <div class="flex flex-col pr-4">
-                            <span class="font-headline-lg text-xl md:text-2xl text-white mb-1">Add Infacto Merch</span>
-                            <span class="font-body-md text-xs md:text-sm text-gray-400">Exclusive 100% Cotton event t-shirts for your team</span>
-                        </div>
-                        <label class="relative inline-flex items-center cursor-pointer pointer-events-none shrink-0">
-                            <input type="checkbox" id="addMerchCheckbox" name="add_merch" class="sr-only peer">
-                            <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-yellow-600"></div>
-                        </label>
-                    </div>
-
-                    <!-- Size Selectors (Hidden by default) -->
-                    <div id="merchSizesContainer" class="hidden mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-[#050505] border border-[#222222] rounded-lg">
-                        <div class="flex flex-col group">
-                            <label class="font-label-md text-gray-300 mb-2 group-focus-within:text-white transition-colors">Your T-Shirt Size (Rs 449)</label>
-                            <select name="primary_tshirt_size" class="border border-gray-700 bg-transparent rounded-md p-3 font-body-md text-white focus:border-white focus:ring-0 transition-colors w-full cursor-pointer">
-                                <option value="" disabled selected class="text-black">Select Size</option>
-                                <option value="Dont want" class="text-black">Dont want</option>
-                                <option value="XS" class="text-black">XS</option>
-                                <option value="S" class="text-black">S</option>
-                                <option value="M" class="text-black">M</option>
-                                <option value="L" class="text-black">L</option>
-                                <option value="XL" class="text-black">XL</option>
-                                <option value="XXL" class="text-black">XXL</option>
-                            </select>
-                        </div>
-                        <div class="flex flex-col group">
-                            <label class="font-label-md text-gray-300 mb-2 group-focus-within:text-white transition-colors">Teammate T-Shirt Size (Rs 449)</label>
-                            <select name="teammate_tshirt_size" class="border border-gray-700 bg-transparent rounded-md p-3 font-body-md text-white focus:border-white focus:ring-0 transition-colors w-full cursor-pointer">
-                                <option value="" disabled selected class="text-black">Select Size</option>
-                                <option value="Dont want" class="text-black">Dont want</option>
-                                <option value="XS" class="text-black">XS</option>
-                                <option value="S" class="text-black">S</option>
-                                <option value="M" class="text-black">M</option>
-                                <option value="L" class="text-black">L</option>
-                                <option value="XL" class="text-black">XL</option>
-                                <option value="XXL" class="text-black">XXL</option>
-                            </select>
-                        </div>
-
-                        <!-- Size Guide Image & Discount Note -->
-                        <div class="col-span-1 md:col-span-2 mt-4 pt-4 border-t border-zinc-800 flex flex-col gap-4">
-                            <div class="bg-zinc-950 p-2.5 rounded-lg border border-zinc-800 text-center">
-                                <p class="font-body-md text-xs text-yellow-500 font-semibold flex items-center justify-center gap-1.5">
-                                    <span class="material-symbols-outlined text-sm">local_offer</span>
-                                    Double Up Deal: Get ₹100 flat discount when you order both T-Shirts!
-                                </p>
+                    <div class="bg-[#0f0f0f] p-6 rounded-lg border border-zinc-800 hover:border-yellow-600/50 transition-colors">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <div class="flex flex-col">
+                                <span class="font-headline-lg text-xl md:text-2xl text-white mb-1">Infacto Merchandise</span>
+                                <span class="font-body-md text-xs md:text-sm text-gray-400">Exclusive 100% Cotton event t-shirts are available! If you'd like to purchase merch, please fill out our separate order form.</span>
                             </div>
-                            <div class="flex flex-col items-center">
-                                <span class="font-label-md text-gray-400 mb-2 text-xs">T-Shirt Size Chart</span>
-                                <div class="rounded-lg overflow-hidden border border-zinc-800 max-w-md w-full">
-                                    <img src="assets/size_guide.jpeg" alt="T-Shirt Size Guide" class="w-full h-auto">
-                                </div>
-                            </div>
+                            <a href="https://forms.gle/w1e6DWUjCZhmaDxV9" target="_blank" class="font-label-md text-yellow-600 border border-yellow-600 rounded px-5 py-2.5 hover:bg-yellow-600 hover:text-black transition-all text-center shrink-0 flex items-center justify-center gap-1.5 font-semibold text-sm">
+                                Order Merch
+                                <span class="material-symbols-outlined text-sm">open_in_new</span>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -227,16 +183,7 @@
                             <span>Team Registration Fee</span>
                             <span class="font-semibold text-white">₹599</span>
                         </div>
-                        <!-- Merch Row (Dynamic) -->
-                        <div id="merch-fee-row" class="hidden flex justify-between py-3 text-gray-200 border-b border-zinc-900 animate-fadeIn">
-                            <span id="merch-fee-desc">Merchandise (0 x T-Shirts)</span>
-                            <span id="merch-fee-amount" class="font-semibold text-white">₹0</span>
-                        </div>
-                        <!-- Discount Row (Dynamic) -->
-                        <div id="discount-row" class="hidden flex justify-between py-3 text-green-500 border-b border-zinc-900 animate-fadeIn">
-                            <span>Combo Discount (2 x T-Shirts)</span>
-                            <span class="font-semibold">-₹100</span>
-                        </div>
+
                         <!-- Total Payable -->
                         <div class="flex justify-between pt-3.5 text-base font-bold text-yellow-500">
                             <span>Total Payable</span>
@@ -299,21 +246,7 @@
             const fileNameDisplay = document.getElementById('fileNameDisplay');
             
             
-            const merchToggleContainer = document.getElementById('merchToggleContainer');
-            const addMerchCheckbox = document.getElementById('addMerchCheckbox');
-            const merchSizesContainer = document.getElementById('merchSizesContainer');
-            
-            if (merchToggleContainer) {
-                merchToggleContainer.addEventListener('click', () => {
-                    addMerchCheckbox.checked = !addMerchCheckbox.checked;
-                    if (addMerchCheckbox.checked) {
-                        merchSizesContainer.classList.remove('hidden');
-                    } else {
-                        merchSizesContainer.classList.add('hidden');
-                    }
-                    calculateFee();
-                });
-            }
+
             
             if(dropZone && fileInput) {
                 ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
@@ -369,6 +302,11 @@
                     btn.disabled = true;
 
                     const formData = new FormData(form);
+                    
+                    // Hardcode merch logic in frontend submission
+                    formData.set('add_merch', 'false');
+                    formData.set('primary_tshirt_size', '');
+                    formData.set('teammate_tshirt_size', '');
 
                     fetch('https://infacto.onrender.com/api/register/', {
                         method: 'POST',
@@ -413,53 +351,13 @@
             }
 
             // Dynamic Registration Fee Calculation
-            const primarySizeSelect = document.querySelector('select[name="primary_tshirt_size"]');
-            const teammateSizeSelect = document.querySelector('select[name="teammate_tshirt_size"]');
-            const merchCheckbox = document.getElementById('addMerchCheckbox');
-            
-            const merchFeeRow = document.getElementById('merch-fee-row');
-            const merchFeeDesc = document.getElementById('merch-fee-desc');
-            const merchFeeAmount = document.getElementById('merch-fee-amount');
-            const discountRow = document.getElementById('discount-row');
             const totalPayableAmount = document.getElementById('total-payable-amount');
 
             function calculateFee() {
                 const baseFee = 599;
-                let merchCount = 0;
-
-                if (merchCheckbox && merchCheckbox.checked) {
-                    if (primarySizeSelect.value && primarySizeSelect.value !== "Dont want" && primarySizeSelect.value !== "Select Size") merchCount++;
-                    if (teammateSizeSelect.value && teammateSizeSelect.value !== "Dont want" && teammateSizeSelect.value !== "Select Size") merchCount++;
-                }
-
-                const merchTotal = merchCount * 449;
-                const discount = merchCount === 2 ? 100 : 0;
-                const grandTotal = baseFee + merchTotal - discount;
-
-                if (merchCount > 0) {
-                    merchFeeDesc.textContent = `Merchandise (${merchCount} x T-Shirt${merchCount > 1 ? 's' : ''})`;
-                    merchFeeAmount.textContent = `₹${merchTotal}`;
-                    merchFeeRow.classList.remove('hidden');
-                    merchFeeRow.classList.add('flex');
-                } else {
-                    merchFeeRow.classList.add('hidden');
-                    merchFeeRow.classList.remove('flex');
-                }
-
-                if (discount > 0) {
-                    discountRow.classList.remove('hidden');
-                    discountRow.classList.add('flex');
-                } else {
-                    discountRow.classList.add('hidden');
-                    discountRow.classList.remove('flex');
-                }
-
-                totalPayableAmount.textContent = `₹${grandTotal}`;
+                totalPayableAmount.textContent = `₹${baseFee}`;
             }
-
-            if (primarySizeSelect) primarySizeSelect.addEventListener('change', calculateFee);
-            if (teammateSizeSelect) teammateSizeSelect.addEventListener('change', calculateFee);
-            if (merchCheckbox) merchCheckbox.addEventListener('change', calculateFee);
+            calculateFee();
         });
     </script>
 </body>
