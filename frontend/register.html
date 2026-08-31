@@ -47,8 +47,14 @@
     </style>
 </head>
 <body>
+    <!-- Maintenance Alert Banner (Top Bar) -->
+    <div class="relative z-50 w-full bg-amber-950/80 border-b border-amber-500/40 text-amber-200 py-3 px-4 text-center text-xs md:text-sm font-body-md flex items-center justify-center gap-2 backdrop-blur-md">
+        <span class="material-symbols-outlined text-amber-400 text-sm md:text-base">warning</span>
+        <span><strong>Maintenance Notice:</strong> We are currently under maintenance until <strong>1:00 AM on September 1st</strong>. Please do not try to register or make any payments until then.</span>
+    </div>
+
     <!-- Generic Transparent Navigation Bar -->
-    <nav class="fixed top-0 left-0 w-full z-50 flex items-center justify-end py-4 px-4 md:py-6 md:px-12 bg-transparent pointer-events-none">
+    <nav class="fixed top-12 left-0 w-full z-40 flex items-center justify-end py-4 px-4 md:py-6 md:px-12 bg-transparent pointer-events-none">
         <div class="flex items-center pointer-events-auto drop-shadow-md">
             <a href="index.html" class="text-white/80 text-[11px] md:text-base font-medium hover:text-white transition-colors duration-200 font-body-lg flex items-center gap-1 md:gap-2 bg-black/60 px-3 md:px-4 py-1.5 md:py-2 rounded-full border border-white/10 backdrop-blur-sm uppercase tracking-wider">
                 <span class="material-symbols-outlined" style="font-size: 16px;">arrow_back</span>
@@ -60,6 +66,15 @@
     <!-- Register Section -->
     <section class="relative w-full min-h-screen flex items-center justify-center py-24 px-6 md:px-12 bg-[#000000] overflow-hidden">
         <div class="w-full max-w-3xl p-8 md:p-12 relative z-10 bg-[#0a0a0a] border border-[#222222] rounded-lg shadow-2xl">
+            <!-- Form Maintenance Alert Card -->
+            <div class="mb-8 p-4 rounded-md bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs md:text-sm font-body-md flex items-start md:items-center gap-3">
+                <span class="material-symbols-outlined text-amber-400 text-lg md:text-xl shrink-0 mt-0.5 md:mt-0">error</span>
+                <div>
+                    <span class="font-semibold text-amber-300">System Maintenance in Progress:</span>
+                    We are currently under maintenance until <strong>1:00 AM on 1st September</strong>. Please do not attempt to submit registrations or make payments until maintenance completes.
+                </div>
+            </div>
+
             <!-- Header Section -->
             <div class="text-center mb-12">
                 <h1 class="font-headline-lg text-4xl md:text-5xl text-white mb-4 mt-8">Registration</h1>
@@ -315,7 +330,8 @@
                     formData.set('primary_tshirt_size', '');
                     formData.set('teammate_tshirt_size', '');
 
-                    fetch('https://infacto.onrender.com/api/register/', {
+                    const API_BASE_URL = 'https://infacto.onrender.com';
+                    fetch(`${API_BASE_URL}/api/register/`, {
                         method: 'POST',
                         body: formData,
                     })

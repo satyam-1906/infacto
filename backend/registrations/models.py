@@ -30,8 +30,8 @@ class TeamRegistration(models.Model):
     
     # Merch Fields
     add_merch = models.BooleanField(default=False)
-    primary_tshirt_size = models.CharField(max_length=5, blank=True, null=True)
-    teammate_tshirt_size = models.CharField(max_length=5, blank=True, null=True)
+    primary_tshirt_size = models.CharField(max_length=50, blank=True, null=True)
+    teammate_tshirt_size = models.CharField(max_length=50, blank=True, null=True)
     
     # Delegate Assignment Fields
     debate_topic = models.CharField(max_length=500, default='Waiting for Assignment...', blank=True, null=True)
