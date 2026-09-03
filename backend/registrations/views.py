@@ -162,9 +162,11 @@ def candidate_login(request):
                     "data": {
                         "team_name": team.team_name if team else username,
                         "round_1_topic": team.round_1_topic if team else "TBD",
+                        "round_1_stance": team.round_1_stance if team else "Pending",
                         "round_2_topic": team.round_2_topic if team else "TBD",
+                        "round_2_stance": team.round_2_stance if team else "Pending",
                         "round_3_topic": team.round_3_topic if team else "TBD",
-                        "stance": team.stance if team else "TBD",
+                        "round_3_stance": team.round_3_stance if team else "Pending",
                         "debate_date": team.debate_date if team else "TBD",
                         "classroom": team.classroom if team else "TBD"
                     }
@@ -204,9 +206,11 @@ def get_all_registrations(request):
                 "primary_tshirt_size": r.primary_tshirt_size,
                 "teammate_tshirt_size": r.teammate_tshirt_size,
                 "round_1_topic": r.round_1_topic,
+                "round_1_stance": r.round_1_stance,
                 "round_2_topic": r.round_2_topic,
+                "round_2_stance": r.round_2_stance,
                 "round_3_topic": r.round_3_topic,
-                "stance": r.stance,
+                "round_3_stance": r.round_3_stance,
                 "debate_date": r.debate_date,
                 "classroom": r.classroom,
                 "is_approved": r.is_approved,
@@ -261,7 +265,7 @@ def health_check(request):
 def update_assignment(request):
     """
     Admin: update debate assignment fields for a single registration.
-    Expected JSON body: { id, round_1_topic, round_2_topic, round_3_topic, stance, classroom, debate_date }
+    Expected JSON body: { id, round_1_topic, round_1_stance, round_2_topic, round_2_stance, round_3_topic, round_3_stance, classroom, debate_date }
     """
     token = request.headers.get('X-Admin-Token', '')
     if not token or not _verify_admin_token(token):
@@ -277,28 +281,34 @@ def update_assignment(request):
             # Only update provided fields (allow partial updates)
             if 'round_1_topic' in body:
                 reg.round_1_topic = body['round_1_topic']
+            if 'round_1_stance' in body:
+                reg.round_1_stance = body['round_1_stance']
             if 'round_2_topic' in body:
                 reg.round_2_topic = body['round_2_topic']
+            if 'round_2_stance' in body:
+                reg.round_2_stance = body['round_2_stance']
             if 'round_3_topic' in body:
                 reg.round_3_topic = body['round_3_topic']
-            if 'stance' in body:
-                reg.stance = body['stance']
+            if 'round_3_stance' in body:
+                reg.round_3_stance = body['round_3_stance']
             if 'classroom' in body:
                 reg.classroom = body['classroom']
             if 'debate_date' in body:
                 reg.debate_date = body['debate_date']
 
             # Use update_fields to avoid triggering email re-send in save()
-            reg.save(update_fields=['round_1_topic', 'round_2_topic', 'round_3_topic', 'stance', 'classroom', 'debate_date'])
+            reg.save(update_fields=['round_1_topic', 'round_1_stance', 'round_2_topic', 'round_2_stance', 'round_3_topic', 'round_3_stance', 'classroom', 'debate_date'])
 
             return JsonResponse({
                 "status": "success",
                 "message": f"Assignment updated for team {reg.team_name}.",
                 "data": {
                     "round_1_topic": reg.round_1_topic,
+                    "round_1_stance": reg.round_1_stance,
                     "round_2_topic": reg.round_2_topic,
+                    "round_2_stance": reg.round_2_stance,
                     "round_3_topic": reg.round_3_topic,
-                    "stance": reg.stance,
+                    "round_3_stance": reg.round_3_stance,
                     "classroom": reg.classroom,
                     "debate_date": reg.debate_date,
                 }

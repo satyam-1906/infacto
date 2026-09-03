@@ -122,9 +122,15 @@
             <div class="relative group">
                 <div class="absolute -inset-0.5 bg-gradient-to-r from-zinc-700 via-yellow-600/50 to-zinc-700 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
                 <div class="relative w-full bg-[#0a0a0a] border border-white/10 rounded-xl p-6 md:p-8 shadow-xl">
-                    <div class="flex items-center gap-3 mb-3">
-                        <span class="material-symbols-outlined text-yellow-600 border border-yellow-600/30 bg-yellow-600/10 p-1.5 rounded-lg text-xl">gavel</span>
-                        <h2 class="font-headline-lg text-lg uppercase tracking-widest text-yellow-500 font-semibold">Round 1 Topic</h2>
+                    <div class="flex items-center justify-between gap-3 mb-3">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-yellow-600 border border-yellow-600/30 bg-yellow-600/10 p-1.5 rounded-lg text-xl">gavel</span>
+                            <h2 class="font-headline-lg text-lg uppercase tracking-widest text-yellow-500 font-semibold">Round 1 Topic</h2>
+                        </div>
+                        <div class="bg-[#111] border border-white/10 rounded px-3 py-1 text-right">
+                            <span class="block text-[10px] uppercase tracking-widest text-gray-500">Stance</span>
+                            <span class="block font-headline-lg text-sm text-gray-400 font-semibold"><span id="dashStanceRound1">Pending</span></span>
+                        </div>
                     </div>
                     <p class="font-display-lg text-xl md:text-2xl text-white leading-relaxed"><span id="dashTopicRound1">"Waiting for Assignment..."</span></p>
                 </div>
@@ -134,9 +140,15 @@
             <div class="relative group">
                 <div class="absolute -inset-0.5 bg-gradient-to-r from-zinc-700 via-yellow-600/50 to-zinc-700 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
                 <div class="relative w-full bg-[#0a0a0a] border border-white/10 rounded-xl p-6 md:p-8 shadow-xl">
-                    <div class="flex items-center gap-3 mb-3">
-                        <span class="material-symbols-outlined text-yellow-600 border border-yellow-600/30 bg-yellow-600/10 p-1.5 rounded-lg text-xl">gavel</span>
-                        <h2 class="font-headline-lg text-lg uppercase tracking-widest text-yellow-500 font-semibold">Round 2 Topic</h2>
+                    <div class="flex items-center justify-between gap-3 mb-3">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-yellow-600 border border-yellow-600/30 bg-yellow-600/10 p-1.5 rounded-lg text-xl">gavel</span>
+                            <h2 class="font-headline-lg text-lg uppercase tracking-widest text-yellow-500 font-semibold">Round 2 Topic</h2>
+                        </div>
+                        <div class="bg-[#111] border border-white/10 rounded px-3 py-1 text-right">
+                            <span class="block text-[10px] uppercase tracking-widest text-gray-500">Stance</span>
+                            <span class="block font-headline-lg text-sm text-gray-400 font-semibold"><span id="dashStanceRound2">Pending</span></span>
+                        </div>
                     </div>
                     <p class="font-display-lg text-xl md:text-2xl text-white leading-relaxed"><span id="dashTopicRound2">"Waiting for Assignment..."</span></p>
                 </div>
@@ -146,20 +158,22 @@
             <div class="relative group">
                 <div class="absolute -inset-0.5 bg-gradient-to-r from-zinc-700 via-yellow-600/50 to-zinc-700 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
                 <div class="relative w-full bg-[#0a0a0a] border border-white/10 rounded-xl p-6 md:p-8 shadow-xl">
-                    <div class="flex items-center gap-3 mb-3">
-                        <span class="material-symbols-outlined text-yellow-600 border border-yellow-600/30 bg-yellow-600/10 p-1.5 rounded-lg text-xl">gavel</span>
-                        <h2 class="font-headline-lg text-lg uppercase tracking-widest text-yellow-500 font-semibold">Round 3 Topic</h2>
+                    <div class="flex items-center justify-between gap-3 mb-3">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-yellow-600 border border-yellow-600/30 bg-yellow-600/10 p-1.5 rounded-lg text-xl">gavel</span>
+                            <h2 class="font-headline-lg text-lg uppercase tracking-widest text-yellow-500 font-semibold">Round 3 Topic</h2>
+                        </div>
+                        <div class="bg-[#111] border border-white/10 rounded px-3 py-1 text-right">
+                            <span class="block text-[10px] uppercase tracking-widest text-gray-500">Stance</span>
+                            <span class="block font-headline-lg text-sm text-gray-400 font-semibold"><span id="dashStanceRound3">Pending</span></span>
+                        </div>
                     </div>
                     <p class="font-display-lg text-xl md:text-2xl text-white leading-relaxed"><span id="dashTopicRound3">"Waiting for Assignment..."</span></p>
                 </div>
             </div>
 
             <!-- Additional Details Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-                <div class="bg-[#0a0a0a] border border-white/10 rounded-xl p-5 shadow-lg">
-                    <span class="block text-xs uppercase tracking-widest text-gray-500 mb-1 font-semibold">Your Stance</span>
-                    <span class="block font-headline-lg text-xl text-red-400"><span id="dashStance">Pending</span></span>
-                </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
                 <div class="bg-[#0a0a0a] border border-white/10 rounded-xl p-5 shadow-lg">
                     <span class="block text-xs uppercase tracking-widest text-gray-500 mb-1 font-semibold">Classroom</span>
                     <span class="block font-headline-lg text-xl text-white"><span id="dashClassroom">TBD</span></span>
@@ -277,7 +291,9 @@
             const dashTopicRound1 = document.getElementById('dashTopicRound1');
             const dashTopicRound2 = document.getElementById('dashTopicRound2');
             const dashTopicRound3 = document.getElementById('dashTopicRound3');
-            const dashStance = document.getElementById('dashStance');
+            const dashStanceRound1 = document.getElementById('dashStanceRound1');
+            const dashStanceRound2 = document.getElementById('dashStanceRound2');
+            const dashStanceRound3 = document.getElementById('dashStanceRound3');
             const dashDate = document.getElementById('dashDate');
             const dashClassroom = document.getElementById('dashClassroom');
 
@@ -305,7 +321,7 @@
                     'ID','Team Name','Primary Name','Primary Email','Primary Mobile',
                     'Teammate Name','Teammate Email','Teammate Mobile','Institution',
                     'Experience','Merch','Primary Size','Teammate Size','Referral Code',
-                    'Round 1 Topic','Round 2 Topic','Round 3 Topic','Stance','Date','Classroom',
+                    'Round 1 Topic','Round 1 Stance','Round 2 Topic','Round 2 Stance','Round 3 Topic','Round 3 Stance','Date','Classroom',
                     'Status','Login ID','Password','Payment URL','Txn ID'
                 ];
                 const rows = allRegistrations.map(r => [
@@ -313,7 +329,7 @@
                     r.teammate_name || '', r.teammate_email || '', r.teammate_mobile || '',
                     r.institution, r.experience || '',
                     r.add_merch ? 'Yes' : 'No', r.primary_tshirt_size || '', r.teammate_tshirt_size || '',
-                    r.referral_code || '', r.round_1_topic || '', r.round_2_topic || '', r.round_3_topic || '', r.stance || '',
+                    r.referral_code || '', r.round_1_topic || '', r.round_1_stance || '', r.round_2_topic || '', r.round_2_stance || '', r.round_3_topic || '', r.round_3_stance || '',
                     r.debate_date || '', r.classroom || '',
                     r.is_approved ? 'Approved' : 'Pending',
                     r.generated_username || '', r.generated_password || '',
@@ -333,6 +349,19 @@
             if (exportCsvBtn) exportCsvBtn.addEventListener('click', exportCSV);
 
             const API_BASE_URL = 'https://infacto-6u4s.onrender.com';
+
+            function applyStanceBadge(el, stanceVal) {
+                if (!el) return;
+                el.textContent = stanceVal || 'Pending';
+                const ls = (stanceVal || '').toLowerCase();
+                if (ls.includes('for') || ls.includes('prop') || ls.includes('affirmative')) {
+                    el.className = 'text-green-400 font-semibold';
+                } else if (ls.includes('against') || ls.includes('oppo') || ls.includes('negative')) {
+                    el.className = 'text-red-400 font-semibold';
+                } else {
+                    el.className = 'text-gray-400 font-semibold';
+                }
+            }
 
             // ── Login Form Submit ──────────────────────────────────────
             if (loginForm) {
@@ -375,16 +404,10 @@
                                 dashDate.textContent = data.data.debate_date;
                                 dashClassroom.textContent = data.data.classroom;
 
-                                // Stance coloration
-                                dashStance.textContent = data.data.stance;
-                                const ls = data.data.stance.toLowerCase();
-                                if (ls.includes('for') || ls.includes('prop') || ls.includes('affirmative')) {
-                                    dashStance.parentElement.className = 'block font-headline-lg text-xl text-green-400';
-                                } else if (ls.includes('against') || ls.includes('oppo') || ls.includes('negative')) {
-                                    dashStance.parentElement.className = 'block font-headline-lg text-xl text-red-500';
-                                } else {
-                                    dashStance.parentElement.className = 'block font-headline-lg text-xl text-white';
-                                }
+                                // Stance coloration for 3 rounds
+                                applyStanceBadge(dashStanceRound1, data.data.round_1_stance);
+                                applyStanceBadge(dashStanceRound2, data.data.round_2_stance);
+                                applyStanceBadge(dashStanceRound3, data.data.round_3_stance);
 
                                 dashboardContainer.style.display = 'flex';
                             }
@@ -518,37 +541,56 @@
                         <td colspan="7" class="py-6 px-6">
                             <form class="edit-assignment-form" data-id="${r.id}">
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
-                                    <div class="md:col-span-3 space-y-1">
+                                    <div class="md:col-span-2 space-y-1">
                                         <label class="block text-xs uppercase tracking-widest text-gray-500 font-bold">Round 1 Topic</label>
                                         <input type="text" name="round_1_topic" value="${r.round_1_topic || ''}" class="w-full bg-[#111] border border-white/10 rounded px-3 py-2 text-white outline-none focus:border-yellow-600 transition-colors">
                                     </div>
-                                    <div class="md:col-span-3 space-y-1">
+                                    <div class="space-y-1">
+                                        <label class="block text-xs uppercase tracking-widest text-gray-500 font-bold">Round 1 Stance</label>
+                                        <select name="round_1_stance" class="w-full bg-[#111] border border-white/10 rounded px-3 py-2 text-white outline-none focus:border-yellow-600 transition-colors">
+                                            <option value="Pending" ${r.round_1_stance === 'Pending' ? 'selected' : ''}>Pending</option>
+                                            <option value="For (Proposition)" ${r.round_1_stance === 'For (Proposition)' ? 'selected' : ''}>For (Proposition)</option>
+                                            <option value="Against (Opposition)" ${r.round_1_stance === 'Against (Opposition)' ? 'selected' : ''}>Against (Opposition)</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="md:col-span-2 space-y-1">
                                         <label class="block text-xs uppercase tracking-widest text-gray-500 font-bold">Round 2 Topic</label>
                                         <input type="text" name="round_2_topic" value="${r.round_2_topic || ''}" class="w-full bg-[#111] border border-white/10 rounded px-3 py-2 text-white outline-none focus:border-yellow-600 transition-colors">
                                     </div>
-                                    <div class="md:col-span-3 space-y-1">
+                                    <div class="space-y-1">
+                                        <label class="block text-xs uppercase tracking-widest text-gray-500 font-bold">Round 2 Stance</label>
+                                        <select name="round_2_stance" class="w-full bg-[#111] border border-white/10 rounded px-3 py-2 text-white outline-none focus:border-yellow-600 transition-colors">
+                                            <option value="Pending" ${r.round_2_stance === 'Pending' ? 'selected' : ''}>Pending</option>
+                                            <option value="For (Proposition)" ${r.round_2_stance === 'For (Proposition)' ? 'selected' : ''}>For (Proposition)</option>
+                                            <option value="Against (Opposition)" ${r.round_2_stance === 'Against (Opposition)' ? 'selected' : ''}>Against (Opposition)</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="md:col-span-2 space-y-1">
                                         <label class="block text-xs uppercase tracking-widest text-gray-500 font-bold">Round 3 Topic</label>
                                         <input type="text" name="round_3_topic" value="${r.round_3_topic || ''}" class="w-full bg-[#111] border border-white/10 rounded px-3 py-2 text-white outline-none focus:border-yellow-600 transition-colors">
                                     </div>
                                     <div class="space-y-1">
-                                        <label class="block text-xs uppercase tracking-widest text-gray-500 font-bold">Stance</label>
-                                        <select name="stance" class="w-full bg-[#111] border border-white/10 rounded px-3 py-2 text-white outline-none focus:border-yellow-600 transition-colors">
-                                            <option value="Pending" ${r.stance === 'Pending' ? 'selected' : ''}>Pending</option>
-                                            <option value="For (Proposition)" ${r.stance === 'For (Proposition)' ? 'selected' : ''}>For (Proposition)</option>
-                                            <option value="Against (Opposition)" ${r.stance === 'Against (Opposition)' ? 'selected' : ''}>Against (Opposition)</option>
+                                        <label class="block text-xs uppercase tracking-widest text-gray-500 font-bold">Round 3 Stance</label>
+                                        <select name="round_3_stance" class="w-full bg-[#111] border border-white/10 rounded px-3 py-2 text-white outline-none focus:border-yellow-600 transition-colors">
+                                            <option value="Pending" ${r.round_3_stance === 'Pending' ? 'selected' : ''}>Pending</option>
+                                            <option value="For (Proposition)" ${r.round_3_stance === 'For (Proposition)' ? 'selected' : ''}>For (Proposition)</option>
+                                            <option value="Against (Opposition)" ${r.round_3_stance === 'Against (Opposition)' ? 'selected' : ''}>Against (Opposition)</option>
                                         </select>
                                     </div>
+
                                     <div class="space-y-1">
                                         <label class="block text-xs uppercase tracking-widest text-gray-500 font-bold">Classroom / Venue</label>
                                         <input type="text" name="classroom" value="${r.classroom || ''}" class="w-full bg-[#111] border border-white/10 rounded px-3 py-2 text-white outline-none focus:border-yellow-600 transition-colors">
                                     </div>
                                     <div class="space-y-1">
-                                        <label class="block text-xs uppercase tracking-widest text-gray-500 font-bold">Referral Code</label>
-                                        <input type="text" readonly value="${r.referral_code || 'None'}" class="w-full bg-white/5 border border-white/5 text-gray-500 rounded px-3 py-2 outline-none cursor-not-allowed">
-                                    </div>
-                                    <div class="space-y-1 md:col-span-3">
                                         <label class="block text-xs uppercase tracking-widest text-gray-500 font-bold">Debate Date</label>
                                         <input type="text" name="debate_date" value="${r.debate_date || ''}" class="w-full bg-[#111] border border-white/10 rounded px-3 py-2 text-white outline-none focus:border-yellow-600 transition-colors">
+                                    </div>
+                                    <div class="space-y-1">
+                                        <label class="block text-xs uppercase tracking-widest text-gray-500 font-bold">Referral Code</label>
+                                        <input type="text" readonly value="${r.referral_code || 'None'}" class="w-full bg-white/5 border border-white/5 text-gray-500 rounded px-3 py-2 outline-none cursor-not-allowed">
                                     </div>
                                     <div class="flex items-end justify-between md:col-span-3 pt-4 border-t border-white/5">
                                         <button type="button" class="bg-red-500/10 text-red-400 border border-red-500/25 px-4 py-2 rounded hover:bg-red-500/20 transition text-xs uppercase font-semibold delete-registration-btn" data-id="${r.id}">
@@ -644,9 +686,11 @@
                         const payload = {
                             id: parseInt(id),
                             round_1_topic: formData.get('round_1_topic'),
+                            round_1_stance: formData.get('round_1_stance'),
                             round_2_topic: formData.get('round_2_topic'),
+                            round_2_stance: formData.get('round_2_stance'),
                             round_3_topic: formData.get('round_3_topic'),
-                            stance: formData.get('stance'),
+                            round_3_stance: formData.get('round_3_stance'),
                             classroom: formData.get('classroom'),
                             debate_date: formData.get('debate_date')
                         };
@@ -667,9 +711,11 @@
                                 const target = allRegistrations.find(x => x.id === parseInt(id));
                                 if (target) {
                                     target.round_1_topic = result.data.round_1_topic;
+                                    target.round_1_stance = result.data.round_1_stance;
                                     target.round_2_topic = result.data.round_2_topic;
+                                    target.round_2_stance = result.data.round_2_stance;
                                     target.round_3_topic = result.data.round_3_topic;
-                                    target.stance = result.data.stance;
+                                    target.round_3_stance = result.data.round_3_stance;
                                     target.classroom = result.data.classroom;
                                     target.debate_date = result.data.debate_date;
                                 }

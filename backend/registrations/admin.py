@@ -63,9 +63,11 @@ class TeamRegistrationAdmin(admin.ModelAdmin):
         'primary_tshirt_size',
         'teammate_tshirt_size',
         'round_1_topic',
+        'round_1_stance',
         'round_2_topic',
+        'round_2_stance',
         'round_3_topic',
-        'stance',
+        'round_3_stance',
         'debate_date',
         'classroom',
         'approval_badge',
@@ -76,14 +78,16 @@ class TeamRegistrationAdmin(admin.ModelAdmin):
         'primary_tshirt_size',
         'teammate_tshirt_size',
         'round_1_topic',
+        'round_1_stance',
         'round_2_topic',
+        'round_2_stance',
         'round_3_topic',
-        'stance',
+        'round_3_stance',
         'debate_date',
         'classroom',
     )
 
-    list_filter = ('is_approved', 'add_merch', 'stance', 'institution')
+    list_filter = ('is_approved', 'add_merch', 'institution')
     search_fields = ('team_name', 'primary_name', 'primary_email', 'generated_username', 'institution', 'referral_code', 'txn_id')
     list_per_page = 25
     ordering = ('-id',)
@@ -130,9 +134,12 @@ class TeamRegistrationAdmin(admin.ModelAdmin):
             'description': 'Fill in the debate details for this team. These values are shown on the team\'s participant dashboard after login.',
             'fields': (
                 'round_1_topic',
+                'round_1_stance',
                 'round_2_topic',
+                'round_2_stance',
                 'round_3_topic',
-                ('stance', 'classroom', 'debate_date'),
+                'round_3_stance',
+                ('classroom', 'debate_date'),
             )
         }),
         ('🔐 Admin & Credentials', {
@@ -248,7 +255,7 @@ class TeamRegistrationAdmin(admin.ModelAdmin):
     def formfield_for_dbfield(self, db_field, request, **kwargs):
         from django import forms
         field = super().formfield_for_dbfield(db_field, request, **kwargs)
-        if db_field.name == 'stance' and field is not None:
+        if db_field.name in ('round_1_stance', 'round_2_stance', 'round_3_stance') and field is not None:
             field.widget = forms.Select(
                 choices=[('', '— Select Stance —')] + self.STANCE_CHOICES,
                 attrs={'style': 'min-width:160px;'}
