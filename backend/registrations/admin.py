@@ -62,10 +62,11 @@ class TeamRegistrationAdmin(admin.ModelAdmin):
         'add_merch',
         'primary_tshirt_size',
         'teammate_tshirt_size',
-        'debate_topic',
+        'round_1_topic',
+        'round_2_topic',
+        'round_3_topic',
         'stance',
         'debate_date',
-        'debate_time',
         'classroom',
         'approval_badge',
     )
@@ -74,10 +75,11 @@ class TeamRegistrationAdmin(admin.ModelAdmin):
         'add_merch',
         'primary_tshirt_size',
         'teammate_tshirt_size',
-        'debate_topic',
+        'round_1_topic',
+        'round_2_topic',
+        'round_3_topic',
         'stance',
         'debate_date',
-        'debate_time',
         'classroom',
     )
 
@@ -127,9 +129,10 @@ class TeamRegistrationAdmin(admin.ModelAdmin):
         ('🗣️ Debate Assignment', {
             'description': 'Fill in the debate details for this team. These values are shown on the team\'s participant dashboard after login.',
             'fields': (
-                'debate_topic',
-                ('stance', 'classroom'),
-                ('debate_date', 'debate_time'),
+                'round_1_topic',
+                'round_2_topic',
+                'round_3_topic',
+                ('stance', 'classroom', 'debate_date'),
             )
         }),
         ('🔐 Admin & Credentials', {

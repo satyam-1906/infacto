@@ -161,10 +161,11 @@ def candidate_login(request):
                     "is_admin": False,
                     "data": {
                         "team_name": team.team_name if team else username,
-                        "debate_topic": team.debate_topic if team else "TBD",
+                        "round_1_topic": team.round_1_topic if team else "TBD",
+                        "round_2_topic": team.round_2_topic if team else "TBD",
+                        "round_3_topic": team.round_3_topic if team else "TBD",
                         "stance": team.stance if team else "TBD",
                         "debate_date": team.debate_date if team else "TBD",
-                        "debate_time": team.debate_time if team else "TBD",
                         "classroom": team.classroom if team else "TBD"
                     }
                 })
@@ -202,10 +203,11 @@ def get_all_registrations(request):
                 "add_merch": r.add_merch,
                 "primary_tshirt_size": r.primary_tshirt_size,
                 "teammate_tshirt_size": r.teammate_tshirt_size,
-                "debate_topic": r.debate_topic,
+                "round_1_topic": r.round_1_topic,
+                "round_2_topic": r.round_2_topic,
+                "round_3_topic": r.round_3_topic,
                 "stance": r.stance,
                 "debate_date": r.debate_date,
-                "debate_time": r.debate_time,
                 "classroom": r.classroom,
                 "is_approved": r.is_approved,
                 "generated_username": r.generated_username,
@@ -259,7 +261,7 @@ def health_check(request):
 def update_assignment(request):
     """
     Admin: update debate assignment fields for a single registration.
-    Expected JSON body: { id, debate_topic, stance, classroom, debate_date, debate_time }
+    Expected JSON body: { id, round_1_topic, round_2_topic, round_3_topic, stance, classroom, debate_date }
     """
     token = request.headers.get('X-Admin-Token', '')
     if not token or not _verify_admin_token(token):
@@ -273,29 +275,32 @@ def update_assignment(request):
             reg = TeamRegistration.objects.get(id=reg_id)
 
             # Only update provided fields (allow partial updates)
-            if 'debate_topic' in body:
-                reg.debate_topic = body['debate_topic']
+            if 'round_1_topic' in body:
+                reg.round_1_topic = body['round_1_topic']
+            if 'round_2_topic' in body:
+                reg.round_2_topic = body['round_2_topic']
+            if 'round_3_topic' in body:
+                reg.round_3_topic = body['round_3_topic']
             if 'stance' in body:
                 reg.stance = body['stance']
             if 'classroom' in body:
                 reg.classroom = body['classroom']
             if 'debate_date' in body:
                 reg.debate_date = body['debate_date']
-            if 'debate_time' in body:
-                reg.debate_time = body['debate_time']
 
             # Use update_fields to avoid triggering email re-send in save()
-            reg.save(update_fields=['debate_topic', 'stance', 'classroom', 'debate_date', 'debate_time'])
+            reg.save(update_fields=['round_1_topic', 'round_2_topic', 'round_3_topic', 'stance', 'classroom', 'debate_date'])
 
             return JsonResponse({
                 "status": "success",
                 "message": f"Assignment updated for team {reg.team_name}.",
                 "data": {
-                    "debate_topic": reg.debate_topic,
+                    "round_1_topic": reg.round_1_topic,
+                    "round_2_topic": reg.round_2_topic,
+                    "round_3_topic": reg.round_3_topic,
                     "stance": reg.stance,
                     "classroom": reg.classroom,
                     "debate_date": reg.debate_date,
-                    "debate_time": reg.debate_time,
                 }
             })
         except TeamRegistration.DoesNotExist:

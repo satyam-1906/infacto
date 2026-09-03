@@ -34,10 +34,11 @@ class TeamRegistration(models.Model):
     teammate_tshirt_size = models.CharField(max_length=50, blank=True, null=True)
     
     # Delegate Assignment Fields
-    debate_topic = models.CharField(max_length=500, default='Waiting for Assignment...', blank=True, null=True)
+    round_1_topic = models.CharField(max_length=500, default='Waiting for Assignment...', blank=True, null=True)
+    round_2_topic = models.CharField(max_length=500, default='Waiting for Assignment...', blank=True, null=True)
+    round_3_topic = models.CharField(max_length=500, default='Waiting for Assignment...', blank=True, null=True)
     stance = models.CharField(max_length=100, default='Pending', blank=True, null=True)
     debate_date = models.CharField(max_length=100, default='TBD', blank=True, null=True)
-    debate_time = models.CharField(max_length=100, default='TBD', blank=True, null=True)
     classroom = models.CharField(max_length=100, default='TBD', blank=True, null=True)
     
     # Optional Referral Code
@@ -119,7 +120,7 @@ class TeamRegistration(models.Model):
                         'Teammate Name', 'Teammate Email', 'Teammate Mobile',
                         'Institution', 'Experience', 'Login ID', 'Password',
                         'Merch Opt-In', 'Primary Size', 'Teammate Size',
-                        'Debate Topic', 'Stance', 'Date', 'Time', 'Classroom',
+                        'Round 1 Topic', 'Round 2 Topic', 'Round 3 Topic', 'Stance', 'Date', 'Classroom',
                         'Referral Code', 'Transaction ID'
                     ])
 
@@ -137,19 +138,20 @@ class TeamRegistration(models.Model):
                         self.teammate_name, self.teammate_email, self.teammate_mobile,
                         self.institution, self.experience, self.generated_username, plain_password or "Hidden",
                         merch_status, self.primary_tshirt_size or "-", self.teammate_tshirt_size or "-",
-                        self.debate_topic, self.stance, self.debate_date, self.debate_time, self.classroom,
+                        self.round_1_topic, self.round_2_topic, self.round_3_topic, self.stance, self.debate_date, self.classroom,
                         self.referral_code or "-", self.txn_id or "-"
                     ])
                 elif team_row:
                     ws.cell(row=team_row, column=12, value=merch_status)
                     ws.cell(row=team_row, column=13, value=self.primary_tshirt_size or "-")
                     ws.cell(row=team_row, column=14, value=self.teammate_tshirt_size or "-")
-                    ws.cell(row=team_row, column=15, value=self.debate_topic)
-                    ws.cell(row=team_row, column=16, value=self.stance)
-                    ws.cell(row=team_row, column=17, value=self.debate_date)
-                    ws.cell(row=team_row, column=18, value=self.debate_time)
-                    ws.cell(row=team_row, column=19, value=self.classroom)
-                    ws.cell(row=team_row, column=21, value=self.txn_id or "-")
+                    ws.cell(row=team_row, column=15, value=self.round_1_topic)
+                    ws.cell(row=team_row, column=16, value=self.round_2_topic)
+                    ws.cell(row=team_row, column=17, value=self.round_3_topic)
+                    ws.cell(row=team_row, column=18, value=self.stance)
+                    ws.cell(row=team_row, column=19, value=self.debate_date)
+                    ws.cell(row=team_row, column=20, value=self.classroom)
+                    ws.cell(row=team_row, column=22, value=self.txn_id or "-")
 
                 wb.save(excel_path)
             except Exception as e:
